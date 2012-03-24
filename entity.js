@@ -18,6 +18,7 @@ m.Entity = function(layerName, position, colliderProperties) {
 	}
 	if (colliderProperties['density'] > 0) {
 		references.push( this );
+		goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	}
 	
 	if (colliderProperties['preventRotation'] !== undefined) {
@@ -86,4 +87,40 @@ m.Entity.prototype.update = function(dt) {
     var rot = this.body.GetRotation();
     this.object.setRotation(-rot / Math.PI * 180);
     this.object.setPosition(pos);
+};
+
+m.Entity.prototype.onMouseDown = function(e) {
+	if (this == player) { // I know it's risky...
+		return;
+	}
+	
+	var forceApplying = function(dt) {
+		var pos = this.object.getPosition();
+		var pos2 = player.object.getPosition();
+		var strength = 10000000 / Math.sqrt((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y) );
+		var vect = new box2d.Vec2(pos.x, pos.y);
+		var vect2 = new box2d.Vec2(pos2.x, pos2.y);
+		vect = vect.Negative();
+		vect.x += vect2.x;
+		vect.y += vect2.y;
+		vect.Normalize();
+		vect.x *= strength;
+		vect.y *= strength;
+		if (e.event.button == 2) {
+			vect = vect.Negative();
+		}
+		
+		vect.x = vect.x * dt;
+		vect.y = vect.y * dt;
+		
+		this.body.ApplyForce(vect, this.body.GetOriginPosition());
+	};
+	
+	
+	lime.scheduleManager.schedule(forceApplying,this);
+	var self = this;
+	document.onmouseup = function() { lime.scheduleManager.unschedule(forceApplying,self); }; //Didn't have any other idea....
+	
+	
+	
 };
