@@ -84,6 +84,7 @@ metalparty.start = function() {
 	bounds.minVertex.Set(-1000, -1000);
 	bounds.maxVertex.Set(1000,1000);
 	world = new box2d.World(bounds, gravity, false);
+	
 	var director = new lime.Director(document.body,640,480);
 	var scene = new lime.Scene();
 	
@@ -109,7 +110,7 @@ metalparty.start = function() {
 			}
 		}
 	});
-	new m.PlayerButton({x:5, y: 12});
+	//new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 100});
 	
 

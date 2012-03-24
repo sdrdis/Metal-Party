@@ -1,20 +1,16 @@
 goog.provide('m.Platform');
 
-m.Platform = function(position) {
-	m.Entity.call(this, 'objects', position, {density: 1, restitution: 0.5});
+m.Platform = function(coordinate) {
+	m.Entity.call(this, 'objects', coordinate, {density: 1, restitution: 0.5});
 	
+	var properties = coordinate.tile.properties;
+	console.log(coordinate);
 	
-	var bodyDef = box2d.BodyDef;
-	bodyDef.position = box2d.Vec2(0, 0);
-	bodyDef.linearVelocity = box2d.Vec2(0, 0);
-	
-	var worldBody = world.CreateBody(bodyDef); // BUG !!!
-	
-	var jointDef = new box2d.PrismaticJointDef;
+	var jointDef = new box2d.PrismaticJointDef();
 	jointDef.axis = new box2d.Vec2(0, 1);
 	jointDef.body1 = this.body;
-	jointDef.body2 = body;
-	jointDef.anchorPoint = box2d.Vec2(0, 0);
+	jointDef.body2 = world.GetGroundBody();
+	jointDef.anchorPoint = new box2d.Vec2(0, 0);
 	
 	world.CreateJoint(jointDef);
 };
