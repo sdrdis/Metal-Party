@@ -41,6 +41,13 @@ m.Player.prototype.createShapeDefs = function() {
 m.Player.prototype.onKeyDown = function(e) {
 	var codes = goog.events.KeyCodes;
 	switch (e.event.keyCode) {
+		case codes.DOWN:
+			myButtons = this.getButtons();
+			for ( var i=0; i<myButtons.length; i++){
+				myButtons[i].trigger();
+			}
+			break;
+
 		case codes.LEFT:
 			this.leftPressed = true;
 			this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());

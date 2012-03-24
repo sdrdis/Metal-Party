@@ -100,15 +100,6 @@ metalparty.start = function() {
 	
    	// Level
 	var player = new m.Player({x: 5, y: 2});
-		window.addEventListener('keydown', function(e) {
-			// DOWN
-			if (e.keyCode == 40 ) {
-				myButtons = player.getButtons();
-			for ( var i=0; i<myButtons.length; i++){
-			myButtons[i].trigger();
-			}
-		}
-	});
 	new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 100});
 	
