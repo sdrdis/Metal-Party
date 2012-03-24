@@ -6,6 +6,7 @@ goog.require('m.Player');
 goog.require('m.Wall');
 goog.require('m.Box');
 goog.require('m.Button');
+goog.require('m.Platform');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -45,7 +46,6 @@ metalparty.start = function() {
 	        	layer = layers[ tmx.layers[i].name ];
 		    	layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 		    	tmx.layers[i].tiles.forEach(function(tileInfos) {
-		    		console.log(tileInfos);
 		    		tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
 		    		var type = 'Wall';
 		    		new m[type](tileInfos);
@@ -99,6 +99,7 @@ metalparty.start = function() {
 	
     // Level
 	var perso = new m.Player({x: 1, y: 2});
+	//new m.Platform({x: 100, y: 100});
 
     // Initialization
     lime.scheduleManager.schedule(function(dt) {
