@@ -1,5 +1,5 @@
 //set main namespace
-goog.provide('metalparty');
+goog.provide('m');
 
 goog.require('m.Entity');
 goog.require('m.Player');
@@ -42,7 +42,7 @@ var world;
 var player;
 
 // entrypoint
-metalparty.start = function() {
+m.start = function() {
 
 	function load_tmx(tmx) {
 		for ( var i=0; i<tmx.layers.length; i++ ) {
@@ -146,4 +146,4 @@ metalparty.start = function() {
 }
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
-goog.exportSymbol('metalparty.start', metalparty.start);
+goog.exportSymbol('m.start', m.start);
