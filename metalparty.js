@@ -77,7 +77,7 @@ metalparty.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 200);
+	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
 	bounds.minVertex.Set(-1000, -1000);
 	bounds.maxVertex.Set(1000,1000);

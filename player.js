@@ -11,7 +11,7 @@ m.Player = function(coordinate) {
 	var position = {};
 	position.x = coordinate.x * tilesSize;
 	position.y = coordinate.y * tilesSize;
-	m.Entity.call(this, 'objects', position, {density: .5, preventRotation: true, allowSleep: false});
+	m.Entity.call(this, 'objects', position, {density: 1, preventRotation: true, allowSleep: false});
 	
 	this.leftPressed = false;
 	this.rightPressed = false;
@@ -31,12 +31,12 @@ m.Player.prototype.createObject = function() {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef;
-	shapeDefB.extents.Set(tilesSize / 2, tilesSize * 0.75);
-	shapeDefB.localPosition.Set(0, tilesSize * (-0.25));
+	shapeDefB.extents.Set(tilesSize / 2, tilesSize * 0.80);
+	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
 	
 	var shapeDefC = new box2d.CircleDef;
-	shapeDefC.radius = tilesSize / 2;
-	shapeDefC.localPosition.Set(0, tilesSize * (0.5));
+	shapeDefC.radius = tilesSize * 0.55;
+	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
 	
 	return [ shapeDefB, shapeDefC ];
 };
@@ -46,10 +46,12 @@ m.Player.prototype.onKeyDown = function(e) {
 	switch (e.event.keyCode) {
 		case codes.LEFT:
 			this.leftPressed = true;
+			this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.RIGHT:
 			this.rightPressed = true;
+			this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.UP:
@@ -84,12 +86,19 @@ m.Player.prototype.onKeyUp = function(e) {
 }
 
 m.Player.prototype.beforePhysics = function() {
+	var vel = this.body.GetLinearVelocity();
+	var max = 300;
+	if (Math.abs(vel.x) > max) {
+		vel.x = (vel.x > 0) ? max : -max;
+		this.body.SetLinearVelocity(vel);
+	}
+	
 	if (this.leftPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(-20000, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(-50000, 0), this.body.GetOriginPosition());
 	}
 	
 	if (this.rightPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(20000, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(50000, 0), this.body.GetOriginPosition());
 	}
 	
 	var grounded = false;
@@ -102,21 +111,20 @@ m.Player.prototype.beforePhysics = function() {
 		contact = contact.next;
 	}
 	
+	if (grounded && !this.leftPressed && !this.rightPressed) {	
+		vel.x *= 0.9;
+		this.body.SetLinearVelocity(vel);
+	}
+	
 	if (this.jump) {			
 		this.jump = false;
 		if (grounded) {
-			var vel = this.body.GetLinearVelocity();
 			vel.y = 0;
 			this.body.SetLinearVelocity(vel);
 			var pos = this.body.GetOriginPosition();
 			pos.y += 0.01;
 			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -200000), pos);
+			this.body.ApplyImpulse(new box2d.Vec2(0, -1500000), pos);
 		}
 	}	
 }
-/*
-m.Player.prototype.update = function(dt) {
-	m.Entity.prototype.update.call(this, dt);
-}
-*/
