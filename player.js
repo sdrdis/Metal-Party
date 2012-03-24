@@ -50,12 +50,12 @@ m.Player.prototype.onKeyDown = function(e) {
 
 		case codes.LEFT:
 			this.leftPressed = true;
-			this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
+			//this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.RIGHT:
 			this.rightPressed = true;
-			this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
+			//this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.UP:
@@ -138,14 +138,14 @@ m.Player.prototype.beforePhysics = function() {
 	}
 	
 	if (this.jump) {			
-		this.jump = false;
+		//this.jump = false;
 		if (grounded) {
 			vel.y = 0;
 			this.body.SetLinearVelocity(vel);
 			var pos = this.body.GetOriginPosition();
-			pos.y += 0.01;
+			pos.y -= 1;
 			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -1500000), pos);
+			this.body.ApplyImpulse(new box2d.Vec2(0, -1400000), pos);
 		}
 	}	
 }
