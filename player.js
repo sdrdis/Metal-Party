@@ -62,6 +62,10 @@ m.Player.prototype.onKeyDown = function(e) {
 			this.jump = true;
 			break;
 			
+		case codes.F5:
+			window.location.reload();
+			break;
+			
 		default:
 			return true;
 	}
