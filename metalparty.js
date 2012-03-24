@@ -45,8 +45,10 @@ metalparty.start = function() {
 	        	layer = layers[ tmx.layers[i].name ];
 		    	layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 		    	tmx.layers[i].tiles.forEach(function(tileInfos) {
+		    		console.log(tileInfos);
+		    		tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
 		    		var type = 'Wall';
-		    		new m[type]({x: tileInfos.px, y: tileInfos.py}, tileInfos.tile.frame);
+		    		new m[type](tileInfos);
 		        });
 			}
 		}
@@ -54,6 +56,17 @@ metalparty.start = function() {
 		    scene.appendChild(layers[ key ]);
 	    }
 	}
+	
+	function tmx_tile_parse_property(tile) {
+		var values = {};
+		if (tile.properties.length > 0) {
+			tile.properties.forEach(function(prop) {
+				values[prop.name] = prop.value;
+			});
+		}
+		return values;
+	}
+	
 	function tmx_tile_get_property(tile, name) {
 		var value = null;
 		tile.properties.forEach(function(prop) {
