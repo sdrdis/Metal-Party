@@ -4,11 +4,11 @@ goog.provide('m.Wall');
  * A wall
  * @constructor
  */
-m.Wall = function(position, image) {
-	if (image) {
-		this.image = image;
+m.Wall = function(tileInfos) {
+	if (tileInfos.tile.frame) {
+		this.image = tileInfos.tile.frame;
 	}
-	m.Entity.call(this, 'walls', position, {density: 0});
+	m.Entity.call(this, 'walls', {x: tileInfos.px, y: tileInfos.py}, {density: 0});
 };
 goog.inherits(m.Wall, m.Entity);
 
