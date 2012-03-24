@@ -51,6 +51,30 @@ m.Entity.prototype.createObject = function() {
 	.setFill(255,150,0);
 };
 
+m.Entity.prototype.convertCoordToPos = function(coordinate) {
+	var position = {};
+	position.x = coordinate.x * tilesSize;
+	position.y = coordinate.y * tilesSize;
+	return position
+}
+
+m.Entity.prototype.getCoord = function() {
+	var coordinate = {};
+	var position = this.object.getPosition();
+	coordinate.x = Math.floor( position.x / tilesSize );
+	coordinate.y = Math.floor( position.y / tilesSize );
+	return coordinate;
+}
+
+m.Entity.prototype.collideWithCoord = function( coord ) {
+	var myCoord = this.getCoord();
+	return ( myCoord.x == coord.x && myCoord.y == coord.y );
+}
+
+m.Entity.prototype.collideWithEntity = function( entity ) {
+	return this.collideWithCoord( entity.getCoord() );
+}
+
 m.Entity.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef;
 	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);

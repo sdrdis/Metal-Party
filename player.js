@@ -8,11 +8,8 @@ goog.require('box2d.Vec2');
  * @constructor
  */
 m.Player = function(coordinate) {
-	var position = {};
-	position.x = coordinate.x * tilesSize;
-	position.y = coordinate.y * tilesSize;
-	m.Entity.call(this, 'objects', position, {density: 1, preventRotation: true, allowSleep: false});
-	
+	m.Entity.call(this, 'objects', this.convertCoordToPos(coordinate), {density: 1, preventRotation: true, allowSleep: false});
+
 	this.leftPressed = false;
 	this.rightPressed = false;
 	this.jump = false;
@@ -62,6 +59,19 @@ m.Player.prototype.onKeyDown = function(e) {
 			return true;
 	}
 	return false;
+};
+
+m.Player.prototype.getButtons = function() {
+	var myButtons = [];
+	for ( var i=0; i<buttons.length; i++ ) {
+		var button = buttons[i];
+		if ( button instanceof m.PlayerButton ) {
+			if ( button.collideWithEntity( this ) ) {
+				myButtons.push(button);
+			}
+		}
+	}
+	return myButtons;
 };
 
 m.Player.prototype.onKeyUp = function(e) {

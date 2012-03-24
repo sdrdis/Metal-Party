@@ -5,7 +5,6 @@ goog.provide('m.Wall');
  * @constructor
  */
 m.Wall = function(tileInfos) {
-	console.log(tileInfos);
 	if (tileInfos.tile.frame) {
 		this.image = tileInfos.tile.frame;
 	}
