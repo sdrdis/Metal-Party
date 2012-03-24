@@ -6,6 +6,8 @@ goog.require('m.Player');
 goog.require('m.Wall');
 goog.require('m.Box');
 goog.require('m.Button');
+goog.require('m.PlayerButton');
+goog.require('m.BoxButton');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -33,7 +35,7 @@ goog.require('lime.parser.TMX');
 
 // Globals
 var tilesSize = 32;
-var layers, references = [];
+var layers, references = [], buttons = [];
 var world;
 
 // entrypoint
@@ -74,7 +76,7 @@ metalparty.start = function() {
 	var scene = new lime.Scene();
 	
 	// TMX
-    var tmx = new lime.parser.TMX('resources/area02.tmx');
+	var tmx = new lime.parser.TMX('resources/area02.tmx');
 	layers = {
 	    background: new lime.Layer().setPosition(0,0),
 	    walls: new lime.Layer().setPosition(0,0),
@@ -82,19 +84,30 @@ metalparty.start = function() {
 	    objects: new lime.Layer().setPosition(0,0),
 	    foreground: new lime.Layer().setPosition(0,0),
 	};
-    load_tmx(tmx);
+	load_tmx(tmx);
 	
-    // Level
-	var perso = new m.Player({x: 1, y: 2});
+   	// Level
+	var player = new m.Player({x: 5, y: 2});
+        window.addEventListener('keydown', function(e) {
+            // DOWN
+            if (e.keyCode == 40 ) {
+            	myButtons = player.getButtons();
+	    	for ( var i=0; i<myButtons.length; i++){
+			myButtons[i].trigger();
+	    	}
+	   }
+	});
+	new m.PlayerButton({x:5, y: 12});
+	
 
-    // Initialization
-    lime.scheduleManager.schedule(function(dt) {
+   	// Initialization
+   	lime.scheduleManager.schedule(function(dt) {
         if(dt>100) dt=100; // long delays(after pause) cause false collisions
-        world.Step(dt / 1000, 3);
-        for (var i = 0; i < references.length; i++) {
-        	references[i].update();
-        }
-    },this);
+		world.Step(dt / 1000, 3);
+		for (var i = 0; i < references.length; i++) {
+			references[i].update();
+		}
+	},this);
 	director.makeMobileWebAppCapable();
 	director.replaceScene(scene);
 }
