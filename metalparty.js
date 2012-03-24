@@ -127,7 +127,7 @@ metalparty.start = function() {
 	player = new m.Player({x: 5, y: 2});
 	new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
 	//new m.PlayerButton({x:5, y: 12});
-	//new m.Platform({x: 100, y: 100});
+	new m.Platform({x: 100, y: 200});
 	new m.Door({x:7, y: 11, tile : { properties : {} } });
 	new m.Trap({x:9, y: 12, tile : { properties : {} } });
 	
