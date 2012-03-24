@@ -4,16 +4,23 @@ goog.provide('m.Wall');
  * A wall
  * @constructor
  */
-m.Wall = function(coordinate) {
-	m.Entity.call(this, 'walls', coordinate, {density: 0});
+m.Wall = function(tileInfos) {
+	console.log(tileInfos);
+	if (tileInfos.tile.frame) {
+		this.image = tileInfos.tile.frame;
+	}
+	m.Entity.call(this, 'walls', {x: tileInfos.px, y: tileInfos.py}, {density: 0});
 };
 goog.inherits(m.Wall, m.Entity);
 
 m.Wall.prototype.createObject = function() {
-	return new lime.RoundedRect()
-	.setRadius(4)
-	.setSize(31,31)
-	.setFill(255,150,0);
+	if (this.image) {
+	return new lime.Sprite()
+	.setSize(tilesSize,tilesSize)
+	.setFill(this.image);
+	} else {
+		return m.Wall.superClass_.createObject.call();
+	}
 };
 
 m.Wall.prototype.createShapeDefs = function() {

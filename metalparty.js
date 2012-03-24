@@ -5,6 +5,7 @@ goog.require('m.Entity');
 goog.require('m.Player');
 goog.require('m.Wall');
 goog.require('m.Box');
+goog.require('m.Button');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -27,19 +28,53 @@ goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
 
+goog.require('lime.parser.TMX');
+
 // Globals
 var tilesSize = 32;
 var layers, references = [];
 var world;
 
-function loadMap(layers) {
-	for (var i = 0; i < 20; i++) {
-		new m.Wall({x: i, y: 13});
-	}
-}
-
 // entrypoint
-metalparty.start = function(){
+metalparty.start = function() {
+
+	function load_tmx(tmx) {
+		for ( var i=0; i<tmx.layers.length; i++ ) {
+	        if ( layers[ tmx.layers[i].name ] ) {
+	        	layer = layers[ tmx.layers[i].name ];
+		    	layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
+		    	tmx.layers[i].tiles.forEach(function(tileInfos) {
+		    		console.log(tileInfos);
+		    		tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+		    		var type = 'Wall';
+		    		new m[type](tileInfos);
+		        });
+			}
+		}
+		for ( var key in layers ) {
+		    scene.appendChild(layers[ key ]);
+	    }
+	}
+	
+	function tmx_tile_parse_property(tile) {
+		var values = {};
+		if (tile.properties.length > 0) {
+			tile.properties.forEach(function(prop) {
+				values[prop.name] = prop.value;
+			});
+		}
+		return values;
+	}
+	
+	function tmx_tile_get_property(tile, name) {
+		var value = null;
+		tile.properties.forEach(function(prop) {
+			if (prop.name == name) {
+				value = prop.value;
+			}
+		});
+		return value;
+	}
 	
 	// World
 	var gravity = new box2d.Vec2(0, 200);
@@ -50,7 +85,8 @@ metalparty.start = function(){
 	var director = new lime.Director(document.body,640,480);
 	var scene = new lime.Scene();
 	
-	// Layers
+	// TMX
+    var tmx = new lime.parser.TMX('resources/area02.tmx');
 	layers = {
 	    background: new lime.Layer().setPosition(0,0),
 	    walls: new lime.Layer().setPosition(0,0),
@@ -58,16 +94,10 @@ metalparty.start = function(){
 	    objects: new lime.Layer().setPosition(0,0),
 	    foreground: new lime.Layer().setPosition(0,0),
 	};
-    scene.appendChild(layers['background']);
-    scene.appendChild(layers['walls']);
-    scene.appendChild(layers['decorations']);
-    scene.appendChild(layers['objects']);
-    scene.appendChild(layers['foreground']);
+    load_tmx(tmx);
 	
     // Level
-	var perso = new m.Player({x: 1, y: 1});
-	var box = new m.Box({x: 4, y: 1});
-	loadMap(layers);
+	var perso = new m.Player({x: 1, y: 2});
 
     // Initialization
     lime.scheduleManager.schedule(function(dt) {

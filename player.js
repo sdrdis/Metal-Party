@@ -8,11 +8,14 @@ goog.require('box2d.Vec2');
  * @constructor
  */
 m.Player = function(coordinate) {
-	m.Entity.call(this, 'objects', coordinate, {density: .5, preventRotation: true, allowSleep: false});
+	var position = {};
+	position.x = coordinate.x * tilesSize;
+	position.y = coordinate.y * tilesSize;
+	m.Entity.call(this, 'objects', position, {density: .5, preventRotation: true, allowSleep: false});
 	
-	this.jump = false;
 	this.leftPressed = false;
 	this.rightPressed = false;
+	this.jump = false;
 	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);

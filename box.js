@@ -4,8 +4,8 @@ goog.provide('m.Box');
  * A box
  * @constructor
  */
-m.Box = function(coordinate) {
-	m.Entity.call(this, 'objects', coordinate, {density: 5, restitution: 0.5});
+m.Box = function(position) {
+	m.Entity.call(this, 'objects', position, {density: 5, restitution: 0.5});
 };
 goog.inherits(m.Box, m.Entity);
 
