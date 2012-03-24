@@ -5,6 +5,7 @@ goog.require('m.Entity');
 goog.require('m.Player');
 goog.require('m.Wall');
 goog.require('m.Box');
+goog.require('m.Button');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
