@@ -1,6 +1,9 @@
 goog.provide('m.Wall');
 
-
+/**
+ * A wall
+ * @constructor
+ */
 m.Wall = function(coordinate) {
 	m.Entity.call(this, 'walls', coordinate, {density: 0});
 };

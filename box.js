@@ -1,6 +1,9 @@
 goog.provide('m.Box');
 
-
+/**
+ * A box
+ * @constructor
+ */
 m.Box = function(coordinate) {
 	m.Entity.call(this, 'objects', coordinate, {density: 5, restitution: 0.5});
 };

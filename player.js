@@ -1,6 +1,9 @@
 goog.provide('m.Player');
 
-
+/**
+ * The player
+ * @constructor
+ */
 m.Player = function(coordinate) {
 	m.Entity.call(this, 'objects', coordinate, {density: 5});
 };
