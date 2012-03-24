@@ -116,12 +116,7 @@ metalparty.start = function() {
    	// Initialization
    	lime.scheduleManager.schedule(function(dt) {
 		if(dt>100) dt=100; // long delays(after pause) cause false collisions
-		world.Step(dt / 1000, 3);
-		for (var i = 0; i < references.length; i++) {
-			references[i].update();
-		}
-	},this);
-	player.beforePhysics();
+		player.beforePhysics();
 		world.Step(dt / 1000, 3);
 		for (var i = 0; i < references.length; i++) {
 			references[i].update();
