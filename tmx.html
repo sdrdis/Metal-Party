@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+  <title>metalparty</title>
+  <script type="text/javascript" src="../closure/closure/goog/base.js"></script>
+  <script type="text/javascript">
+    goog.require('lime.Director');
+    goog.require('lime.Scene');
+    goog.require('lime.Layer');
+    goog.require('lime.Circle');
+    goog.require('lime.animation.MoveBy');
+    goog.require('lime.fill.Image');
+    goog.require('lime.Sprite');
+
+    goog.require('lime.parser.TMX');
+  </script>
+  <script type="text/javascript">
+    window.addEventListener('load', function() {
+        var director = new lime.Director(document.body,640,480);
+        var scene = new lime.Scene();
+
+        director.replaceScene(scene);
+
+        var tmx = new lime.parser.TMX('resources/area02.tmx');
+        console.log(tmx);
+
+        var layers = parse_tmx(tmx);
+        scene.appendChild(layers.background);
+        scene.appendChild(layers.foreground);
+
+        var player = new lime.Sprite();
+        player.setSize(32, 64);
+        var player_img = new lime.fill.Image('resources/player.png');
+        player_img.setSize(128, 128);
+        player_img.setOffset(0, 0);
+        player.setFill(player_img);
+
+        player.setPosition(128, 480 - 112);
+        layers.foreground.appendChild(player);
+
+        function movePlayer(dir) {
+            var dx = 0;
+            switch (dir) {
+                case 'left':
+                    dx = -32;
+                    break;
+
+                case 'right':
+                    dx = 32;
+                    break;
+            }
+
+            var layer = player.getParent();
+            var position_x = player.getPosition().x + layer.getPosition().x;
+
+            if (position_x + dx < 0) {
+                console.log('LEFT', position_x, dx);
+                dx = - (position_x + dx);
+            }
+            if (position_x + dx > 640) {
+                dx = 640 - position_x;
+            }
+            addPosition(player, dx, 0);
+
+            if (position_x < 160) {
+                moveLayer(layer, 160 - position_x, 0);
+            }
+            if (position_x > 480) {
+                moveLayer(layer, 480 - position_x, 0);
+            }
+        }
+
+        function moveLayer(layer, dx, dy) {
+            var current_pos = layer.getPosition();
+            var size        = layer.measureContents();
+            var scene_size  = layer.getScene().getSize();
+
+            var new_x = current_pos.x + dx;
+            var new_y = current_pos.y + dy;
+
+            if (new_x > -size.left) {
+                new_x = -size.left;
+            }
+            if (new_y  > -size.top) {
+                new_y = -size.top;
+            }
+            if (new_x < scene_size.width - size.right) {
+                new_x = scene_size.width - size.right;
+            }
+            if (new_y < scene_size.height - size.bottom) {
+                new_y = scene_size.height - size.bottom;
+            }
+            layer.setPosition(new_x, new_y);
+        }
+
+        window.addEventListener('keydown', function(e) {
+            var move = layers.foreground;
+            switch (e.keyCode) {
+                // Down
+                case 40:
+                    moveLayer(move, 0, 32);
+                    break;
+
+                // Up
+                case 38:
+                    moveLayer(move, 0, -32);
+                    break;
+
+                // Right
+                case 39:
+                    //moveLayer(move, 32, 0);
+                    movePlayer('right');
+                    break;
+
+                // Left
+                case 37:
+                    //moveLayer(move, -32, 0);
+                    movePlayer('left');
+                    break;
+            }
+        });
+    });
+
+    function addPosition(object, dx, dy) {
+        var current_pos = object.getPosition();
+        
+        var new_x = current_pos.x + dx;
+        var new_y = current_pos.y + dy;
+
+        object.setPosition(new_x, new_y);
+    }
+
+    function parse_tmx(tmx) {
+        var layers = {};
+        tmx.layers.forEach(function(layerInfos) {
+            var layer = new lime.Layer();
+            layer.setPosition(layerInfos.px, layerInfos.py);
+            layerInfos.tiles.forEach(function(tileInfos) {
+                var sprite = new lime.Sprite();
+                sprite.setSize(tileInfos.tile.width, tileInfos.tile.height);
+                sprite.setPosition(tileInfos.px, tileInfos.py);
+                sprite.setFill(tileInfos.tile.frame);
+                layer.appendChild(sprite);
+            });
+            layers[layerInfos.name] = layer;
+        });
+        return layers;
+    }
+    
+  </script>
+</head>
+
+<body>
+  
+</body>
+</html>
