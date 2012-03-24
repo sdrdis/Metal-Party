@@ -101,7 +101,7 @@ metalparty.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 200);
+	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
 	bounds.minVertex.Set(-1000, -1000);
 	bounds.maxVertex.Set(1000,1000);
@@ -122,15 +122,6 @@ metalparty.start = function() {
 	
    	// Level
 	var player = new m.Player({x: 5, y: 2});
-		window.addEventListener('keydown', function(e) {
-			// DOWN
-			if (e.keyCode == 40 ) {
-				myButtons = player.getButtons();
-			for ( var i=0; i<myButtons.length; i++){
-			myButtons[i].trigger();
-			}
-		}
-	});
 	new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 100});
 	new m.Door({x:7, y: 11, tile : { properties : {} } });
