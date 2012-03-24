@@ -54,18 +54,28 @@
             var layer = player.getParent();
             var position_x = player.getPosition().x + layer.getPosition().x;
 
-            if (position_x + dx < 0) {
-                console.log('LEFT', position_x, dx);
-                dx = - (position_x + dx);
+            // checking left overflow
+            if (position_x + dx < 16) {
+                dx = - (position_x + dx) - 16;
             }
+            // checking right overflow
             if (position_x + dx > 640) {
-                dx = 640 - position_x;
+                dx = - (640 - position_x) + 16;
             }
+            
+            // optmimisation
+            if (dx == 0) {
+                return;
+            }
+
+            // Move the player
             addPosition(player, dx, 0);
 
+            // Move the layer containing the player
             if (position_x < 160) {
                 moveLayer(layer, 160 - position_x, 0);
             }
+            // Move the layer containing the player
             if (position_x > 480) {
                 moveLayer(layer, 480 - position_x, 0);
             }
