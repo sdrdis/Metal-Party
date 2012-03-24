@@ -1,13 +1,12 @@
 goog.provide('m.Entity');
 
-m.Entity = function(layerName, coordinate, colliderProperties) {
+m.Entity = function(layerName, position, colliderProperties) {
 	
 	this.object = this.createObject();
 	layers[layerName].appendChild(this.object);
-	var x = coordinate.x * tilesSize + tilesSize / 2;
-	var y = coordinate.y * tilesSize + tilesSize / 2;
-	this.object.setPosition(x, y);
-	
+	var x = position.x + this.object.getSize().width / 2;
+	var y = position.y + this.object.getSize().height / 2;
+	this.object.setPosition(x ,y );
 	var bodyDef = new box2d.BodyDef;
 	bodyDef.position.Set(x, y);
 

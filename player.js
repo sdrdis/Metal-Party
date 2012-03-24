@@ -5,7 +5,10 @@ goog.provide('m.Player');
  * @constructor
  */
 m.Player = function(coordinate) {
-	m.Entity.call(this, 'objects', coordinate, {density: 5});
+	var position = {};
+	position.x = coordinate.x * tilesSize;
+	position.y = coordinate.y * tilesSize;
+	m.Entity.call(this, 'objects', position, {density: 5});
 };
 goog.inherits(m.Player, m.Entity);
 

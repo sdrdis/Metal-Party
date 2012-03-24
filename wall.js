@@ -4,16 +4,22 @@ goog.provide('m.Wall');
  * A wall
  * @constructor
  */
-m.Wall = function(coordinate) {
-	m.Entity.call(this, 'walls', coordinate, {density: 0});
+m.Wall = function(position, image) {
+	if (image) {
+		this.image = image;
+	}
+	m.Entity.call(this, 'walls', position, {density: 0});
 };
 goog.inherits(m.Wall, m.Entity);
 
 m.Wall.prototype.createObject = function() {
-	return new lime.RoundedRect()
-	.setRadius(4)
-	.setSize(31,31)
-	.setFill(255,150,0);
+	if (this.image) {
+	return new lime.Sprite()
+	.setSize(tilesSize,tilesSize)
+	.setFill(this.image);
+	} else {
+		return m.Wall.superClass_.createObject.call();
+	}
 };
 
 m.Player.prototype.createShapeDefs = function() {
