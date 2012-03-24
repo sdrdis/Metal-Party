@@ -17,10 +17,10 @@ goog.require('lime.animation.MoveTo');
 // entrypoint
 metalparty.start = function(){
 
-	var director = new lime.Director(document.body,1024,768),
+	var director = new lime.Director(document.body,640,480),
 	    scene = new lime.Scene(),
 
-	    target = new lime.Layer().setPosition(512,384),
+	    target = new lime.Layer().setPosition(320,240),
         circle = new lime.Circle().setSize(150,150).setFill(255,150,0),
         lbl = new lime.Label().setSize(160,50).setFontSize(30).setText('TOUCH ME!'),
         title = new lime.Label().setSize(800,70).setFontSize(60).setText('Now move me around!')
@@ -56,7 +56,7 @@ metalparty.start = function(){
             target.runAction(new lime.animation.Spawn(
                 new lime.animation.FadeTo(1),
                 new lime.animation.ScaleTo(1),
-                new lime.animation.MoveTo(512,384)
+                new lime.animation.MoveTo(320,240)
             ));
 
             title.runAction(new lime.animation.FadeTo(0));
