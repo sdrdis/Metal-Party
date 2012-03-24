@@ -22,11 +22,11 @@
 
         director.replaceScene(scene);
 
-        var tmx = new lime.parser.TMX('resources/area02.tmx');
+        var tmx = new lime.parser.TMX('resources/test-area01.tmx');
         console.log(tmx);
 
         var layers = parse_tmx(tmx);
-        scene.appendChild(layers.background);
+        //scene.appendChild(layers.background);
         scene.appendChild(layers.foreground);
 
         var player = new lime.Sprite();
@@ -109,24 +109,24 @@
             switch (e.keyCode) {
                 // Down
                 case 40:
-                    moveLayer(move, 0, 32);
+                    moveLayer(move, 0, -32);
                     break;
 
                 // Up
                 case 38:
-                    moveLayer(move, 0, -32);
+                    moveLayer(move, 0, 32);
                     break;
 
                 // Right
                 case 39:
-                    //moveLayer(move, 32, 0);
-                    movePlayer('right');
+                    moveLayer(move, -32, 0);
+                    //movePlayer('right');
                     break;
 
                 // Left
                 case 37:
-                    //moveLayer(move, -32, 0);
-                    movePlayer('left');
+                    moveLayer(move, 32, 0);
+                    //movePlayer('left');
                     break;
             }
         });
