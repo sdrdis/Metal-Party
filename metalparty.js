@@ -1,6 +1,10 @@
 //set main namespace
 goog.provide('metalparty');
 
+goog.require('m.Entity');
+goog.require('m.Player');
+goog.require('m.Wall');
+goog.require('m.Box');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -36,70 +40,8 @@ var world;
 
 
 
-//bodyDef.AddShape(shapeDef);
-/*
-
-function updateReferences( object ) {
-	if (!object.objectId) {
-		object.objectId = objectMaxId;
-		objectMaxId++;
-	}
-	
-	if (object.currentReference) {
-		delete references[object.currentReference.x][object.currentReference.y][objectMaxId];
-	}
-	var position = object.getPosition();
-	console.dir( position );
-	var tX = Math.round((position.x - tilesSize) / tilesSize);
-	var tY = Math.round((position.y - tilesSize) / tilesSize);
-	if (!references[tX]) {
-		references[tX] = {};
-	}
-	if (!references[tX][tY]) {
-		references[tX][tY] = {};
-	}
-	references[tX][tY][object.objectId] = object;
-	object.currentReference = {x: tX, y: tY};
-}
-
-function moveObject( object, position ) {
-	object.setPosition(position);
-	
-    updateReferences(object);
-}
-*/
-
-function appendChild(layer, coordinate, object, colliderProperties) {
-	var x = coordinate.x * tilesSize + tilesSize / 2;
-	var y = coordinate.y * tilesSize + tilesSize / 2;
-	object.setPosition(x, y);
-	layer.appendChild(object);
-	
-	var bodyDef = new box2d.BodyDef;
-	bodyDef.position.Set(x, y);
-
-	var shapeDef = new box2d.BoxDef;
-	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
-	for (var key in colliderProperties) {
-		shapeDef[key] = colliderProperties[key];
-	}
-	/*
-	shapeDef.density = colliderProperties.density;
-	shapeDef.restitution = 0;
-	shapeDef.friction = 1;
-	*/
-	bodyDef.AddShape(shapeDef);
-	
-
-	var body = world.CreateBody(bodyDef);
-	object._body = body;
-	
-	references.push(object);
-	
-	//updateReferences(object);
-}
-
 function appendObject(coordinate) {
+
 	var object = new lime.RoundedRect()
 	.setRadius(4)
 	.setSize(31,31)
@@ -108,19 +50,23 @@ function appendObject(coordinate) {
 	return object;
 }
 
-
+/*
 function appendWall(coordinate) {
+	
+	
 	var object = new lime.RoundedRect()
 	.setRadius(4)
 	.setSize(31,31)
 	.setFill(255,150,0);
-	appendChild(layers.walls, coordinate, object, {density: 0, restitution: 0.5}
+	
+	
+	appendChild(layers.walls, coordinate, object, {density: 0}
 	);
-}
+}*/
 
 function loadMap(layers) {
 	for (var i = 0; i < 20; i++) {
-		appendWall({x: i, y: 13} );
+		new m.Wall({x: i, y: 13});
 		//layers.walls.appendChild(new lime.RoundedRect().setRadius(4).setSize(31,31).setFill(255,150,0).setPosition(i * 32, 430));
 	}
 }
@@ -151,25 +97,22 @@ metalparty.start = function(){
 	
 	loadMap(layers);
 	
-	var perso = appendObject({x: 1, y: 1});
+	var perso = new m.Player({x: 1, y: 1});
+	var box = new m.Box({x: 2, y: 1});
 	
+	/*
+	var perso = appendObject({x: 1, y: 1});
+	*/
 	
 	
 
 
     lime.scheduleManager.schedule(function(dt) {
-    	var updateFromBody = function(shape){
-            var pos = shape._body.GetCenterPosition();
-            var rot = shape._body.GetRotation();
-            shape.setRotation(-rot / Math.PI * 180);
-            shape.setPosition(pos);
-        }
-    	
         if(dt>100) dt=100; // long delays(after pause) cause false collisions
         world.Step(dt / 1000, 3);
         
         for (var i = 0; i < references.length; i++) {
-        	updateFromBody(references[i]);
+        	references[i].update();
         }
         
     },this);

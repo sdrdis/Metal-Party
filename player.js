@@ -1,0 +1,20 @@
+goog.provide('m.Player');
+
+
+m.Player = function(coordinate) {
+	m.Entity.call(this, 'objects', coordinate, {density: 5});
+};
+goog.inherits(m.Player, m.Entity);
+
+m.Player.prototype.createObject = function() {
+	return new lime.RoundedRect()
+	.setRadius(4)
+	.setSize(31,31)
+	.setFill(255,0,0);
+};
+
+m.Player.prototype.createShapeDefs = function() {
+	var shapeDef = new box2d.BoxDef;
+	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
+	return [ shapeDef ];
+};
