@@ -9,6 +9,8 @@ goog.require('m.Button');
 goog.require('m.PlayerButton');
 goog.require('m.BoxButton');
 goog.require('m.Platform');
+goog.require('m.Door');
+goog.require('m.Trap');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -35,7 +37,7 @@ goog.require('lime.parser.TMX');
 
 // Globals
 var tilesSize = 32;
-var layers, references = [], buttons = [];
+var layers, references = [], buttons = [], targets = {};
 var world;
 var player;
 
@@ -49,7 +51,27 @@ metalparty.start = function() {
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
 					tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-					var type = 'Wall';
+                    var type;
+                    switch (tileInfos.tile.properties.type) {
+                        case 'triggerWorld' :
+                            type = 'BoxButton';
+                            break;
+
+                        case 'triggerPlayer':
+                            type = 'PlayerButton';
+                            break;
+
+                        case 'door':
+                            type = 'Door';
+                            break;
+
+                        case 'trap':
+                            type = 'Trap';
+                            break;
+
+                        default:
+                            type = 'Wall';
+                    }
 					new m[type](tileInfos);
 				});
 			}
@@ -95,7 +117,7 @@ metalparty.start = function() {
 		walls: new lime.Layer().setPosition(0,0),
 		decorations: new lime.Layer().setPosition(0, 0),
 		objects: new lime.Layer().setPosition(0,0),
-		foreground: new lime.Layer().setPosition(0,0),
+		foreground: new lime.Layer().setPosition(0,0)
 	};
 	load_tmx(tmx);
 	
@@ -103,17 +125,10 @@ metalparty.start = function() {
    	// Level
 	player = new m.Player({x: 5, y: 2});
 	new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
-		window.addEventListener('keydown', function(e) {
-			// DOWN
-			if (e.keyCode == 40 ) {
-				myButtons = player.getButtons();
-			for ( var i=0; i<myButtons.length; i++){
-			myButtons[i].trigger();
-			}
-		}
-	});
 	new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 100});
+	new m.Door({x:7, y: 11, tile : { properties : {} } });
+	new m.Trap({x:9, y: 12, tile : { properties : {} } });
 	
 
    	// Initialization
