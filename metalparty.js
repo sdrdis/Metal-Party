@@ -6,6 +6,8 @@ goog.require('m.Player');
 goog.require('m.Wall');
 goog.require('m.Box');
 goog.require('m.Button');
+goog.require('m.PlayerButton');
+goog.require('m.BoxButton');
 goog.require('m.Platform');
 
 goog.require('box2d.BodyDef');
@@ -33,27 +35,28 @@ goog.require('lime.parser.TMX');
 
 // Globals
 var tilesSize = 32;
-var layers, references = [];
+var layers, references = [], buttons = [];
 var world;
+var player;
 
 // entrypoint
 metalparty.start = function() {
 
 	function load_tmx(tmx) {
 		for ( var i=0; i<tmx.layers.length; i++ ) {
-	        if ( layers[ tmx.layers[i].name ] ) {
-	        	layer = layers[ tmx.layers[i].name ];
-		    	layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
-		    	tmx.layers[i].tiles.forEach(function(tileInfos) {
-		    		tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-		    		var type = 'Wall';
-		    		new m[type](tileInfos);
-		        });
+			if ( layers[ tmx.layers[i].name ] ) {
+				layer = layers[ tmx.layers[i].name ];
+				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
+				tmx.layers[i].tiles.forEach(function(tileInfos) {
+					tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+					var type = 'Wall';
+					new m[type](tileInfos);
+				});
 			}
 		}
 		for ( var key in layers ) {
-		    scene.appendChild(layers[ key ]);
-	    }
+			scene.appendChild(layers[ key ]);
+		}
 	}
 	
 	function tmx_tile_parse_property(tile) {
@@ -77,7 +80,7 @@ metalparty.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 200);
+	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
 	bounds.minVertex.Set(-1000, -1000);
 	bounds.maxVertex.Set(1000,1000);
@@ -86,30 +89,42 @@ metalparty.start = function() {
 	var scene = new lime.Scene();
 	
 	// TMX
-    var tmx = new lime.parser.TMX('resources/area02.tmx');
+	var tmx = new lime.parser.TMX('resources/area02.tmx');
 	layers = {
-	    background: new lime.Layer().setPosition(0,0),
-	    walls: new lime.Layer().setPosition(0,0),
-	    decorations: new lime.Layer().setPosition(0, 0),
-	    objects: new lime.Layer().setPosition(0,0),
-	    foreground: new lime.Layer().setPosition(0,0),
+		background: new lime.Layer().setPosition(0,0),
+		walls: new lime.Layer().setPosition(0,0),
+		decorations: new lime.Layer().setPosition(0, 0),
+		objects: new lime.Layer().setPosition(0,0),
+		foreground: new lime.Layer().setPosition(0,0),
 	};
-    load_tmx(tmx);
+	load_tmx(tmx);
 	
-    // Level
-	var perso = new m.Player({x: 1, y: 2});
-	new m.Box({x: 4 * tilesSize, y: 4 * tilesSize});
-	//new m.Platform({x: 100, y: 100});
 
-    // Initialization
-    lime.scheduleManager.schedule(function(dt) {
-        if(dt>100) dt=100; // long delays(after pause) cause false collisions
-		perso.beforePhysics();
-        world.Step(dt / 1000, 3);
-        for (var i = 0; i < references.length; i++) {
-        	references[i].update();
-        }
-    },this);
+   	// Level
+	player = new m.Player({x: 5, y: 2});
+	new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
+		window.addEventListener('keydown', function(e) {
+			// DOWN
+			if (e.keyCode == 40 ) {
+				myButtons = player.getButtons();
+			for ( var i=0; i<myButtons.length; i++){
+			myButtons[i].trigger();
+			}
+		}
+	});
+	new m.PlayerButton({x:5, y: 12});
+	//new m.Platform({x: 100, y: 100});
+	
+
+   	// Initialization
+   	lime.scheduleManager.schedule(function(dt) {
+		if(dt>100) dt=100; // long delays(after pause) cause false collisions
+		player.beforePhysics();
+		world.Step(dt / 1000, 3);
+		for (var i = 0; i < references.length; i++) {
+			references[i].update();
+		}
+	},this);
 	director.makeMobileWebAppCapable();
 	director.replaceScene(scene);
 }

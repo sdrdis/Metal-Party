@@ -52,6 +52,30 @@ m.Entity.prototype.createObject = function() {
 	.setFill(255,150,0);
 };
 
+m.Entity.prototype.convertCoordToPos = function(coordinate) {
+	var position = {};
+	position.x = coordinate.x * tilesSize;
+	position.y = coordinate.y * tilesSize;
+	return position
+}
+
+m.Entity.prototype.getCoord = function() {
+	var coordinate = {};
+	var position = this.object.getPosition();
+	coordinate.x = Math.floor( position.x / tilesSize );
+	coordinate.y = Math.floor( position.y / tilesSize );
+	return coordinate;
+}
+
+m.Entity.prototype.collideWithCoord = function( coord ) {
+	var myCoord = this.getCoord();
+	return ( myCoord.x == coord.x && myCoord.y == coord.y );
+}
+
+m.Entity.prototype.collideWithEntity = function( entity ) {
+	return this.collideWithCoord( entity.getCoord() );
+}
+
 m.Entity.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef;
 	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
@@ -65,8 +89,38 @@ m.Entity.prototype.update = function(dt) {
     this.object.setPosition(pos);
 };
 
-
 m.Entity.prototype.onMouseDown = function(e) {
-	console.log(this.body);
-	this.body.ApplyForce(new box2d.Vec2(400000, -100000000), this.body.GetOriginPosition());
+	if (this == player) { // I know it's risky...
+		return;
+	}
+	
+	var forceApplying = function(dt) {
+		var pos = this.object.getPosition();
+		var pos2 = player.object.getPosition();
+		var strength = 10000000 / Math.sqrt((pos.x - pos2.x) * (pos.x - pos2.x) + (pos.y - pos2.y) * (pos.y - pos2.y) );
+		var vect = new box2d.Vec2(pos.x, pos.y);
+		var vect2 = new box2d.Vec2(pos2.x, pos2.y);
+		vect = vect.Negative();
+		vect.x += vect2.x;
+		vect.y += vect2.y;
+		vect.Normalize();
+		vect.x *= strength;
+		vect.y *= strength;
+		if (e.event.button == 2) {
+			vect = vect.Negative();
+		}
+		
+		vect.x = vect.x * dt;
+		vect.y = vect.y * dt;
+		
+		this.body.ApplyForce(vect, this.body.GetOriginPosition());
+	};
+	
+	
+	lime.scheduleManager.schedule(forceApplying,this);
+	var self = this;
+	document.onmouseup = function() { lime.scheduleManager.unschedule(forceApplying,self); }; //Didn't have any other idea....
+	
+	
+	
 };
