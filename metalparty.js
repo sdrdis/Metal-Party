@@ -98,6 +98,7 @@ metalparty.start = function() {
 	
     // Level
 	var perso = new m.Player({x: 1, y: 2});
+	new m.Box({x: 4 * tilesSize, y: 4 * tilesSize});
 	//new m.Platform({x: 100, y: 100});
 
     // Initialization

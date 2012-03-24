@@ -18,6 +18,7 @@ m.Entity = function(layerName, position, colliderProperties) {
 	}
 	if (colliderProperties['density'] > 0) {
 		references.push( this );
+		goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	}
 	
 	if (colliderProperties['preventRotation'] !== undefined) {
@@ -62,4 +63,10 @@ m.Entity.prototype.update = function(dt) {
     var rot = this.body.GetRotation();
     this.object.setRotation(-rot / Math.PI * 180);
     this.object.setPosition(pos);
+};
+
+
+m.Entity.prototype.onMouseDown = function(e) {
+	console.log(this.body);
+	this.body.ApplyForce(new box2d.Vec2(400000, -100000000), this.body.GetOriginPosition());
 };
