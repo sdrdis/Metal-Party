@@ -21,6 +21,13 @@ m.Entity = function(layerName, coordinate, colliderProperties) {
 		references.push( this );
 	}
 	
+	if (colliderProperties['preventRotation'] !== undefined) {
+		bodyDef.preventRotation = colliderProperties['preventRotation'];
+	}
+	if (colliderProperties['allowSleep'] !== undefined) {
+		bodyDef.allowSleep = colliderProperties['allowSleep'];
+	}
+	
 	var shapeDefs = this.createShapeDefs();
 	for ( var i=0; i<shapeDefs.length; i++ ) {
 		for (var key in colliderProperties) {
@@ -29,6 +36,13 @@ m.Entity = function(layerName, coordinate, colliderProperties) {
 		bodyDef.AddShape(shapeDefs[i]);
 	}
 	this.body = world.CreateBody(bodyDef);
+	
+	this.shapes = [];
+	var shape = this.body.GetShapeList();
+	while (shape) {
+		this.shapes.push(shape);
+		shape = shape.GetNext();
+	}
 };
 
 m.Entity.prototype.createObject = function() {

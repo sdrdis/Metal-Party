@@ -12,7 +12,6 @@ goog.require('box2d.CircleDef');
 goog.require('box2d.CircleShape');
 goog.require('box2d.PolyDef');
 goog.require('box2d.Vec2');
-goog.require('box2d.Vec2');
 goog.require('box2d.JointDef');
 goog.require('box2d.MouseJointDef');
 goog.require('box2d.World');
@@ -67,12 +66,13 @@ metalparty.start = function(){
 	
     // Level
 	var perso = new m.Player({x: 1, y: 1});
-	var box = new m.Box({x: 2, y: 1});
+	var box = new m.Box({x: 4, y: 1});
 	loadMap(layers);
 
     // Initialization
     lime.scheduleManager.schedule(function(dt) {
         if(dt>100) dt=100; // long delays(after pause) cause false collisions
+		perso.beforePhysics();
         world.Step(dt / 1000, 3);
         for (var i = 0; i < references.length; i++) {
         	references[i].update();
