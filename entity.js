@@ -26,7 +26,7 @@ m.Entity.prototype.createObject = function() {
 };
 
 m.Entity.prototype.createShapeDefs = function() {
-	var shapeDef = new box2d.BoxDef;
+	var shapeDef = new box2d.BoxDef();
 	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];
 };
@@ -39,7 +39,7 @@ m.Entity.prototype.updateShapeDefs = function() {
 		// La Théorie :
 		world.DestroyBody( this.body );
 	}
-	var bodyDef = new box2d.BodyDef;
+	var bodyDef = new box2d.BodyDef();
 	var position = this.object.getPosition();
 	bodyDef.position.Set(position.x, position.y);
 	var shapeDefs = this.createShapeDefs();
@@ -55,6 +55,8 @@ m.Entity.prototype.updateShapeDefs = function() {
 	if (this.colliderProperties['allowSleep'] !== undefined) {
 		bodyDef.allowSleep = this.colliderProperties['allowSleep'];
 	}
+	//console.log(shapeDefs);
+	//console.log(bodyDef);
 	this.body = world.CreateBody(bodyDef);
 };
 

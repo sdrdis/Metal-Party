@@ -12,6 +12,7 @@ goog.require('m.Platform');
 goog.require('m.Target');
 goog.require('m.DoorTarget');
 goog.require('m.TrapTarget');
+goog.require('m.DeathZone');
 goog.require('m.ManualAnimation');
 
 goog.require('box2d.BodyDef');
@@ -42,19 +43,24 @@ var tilesSize = 32;
 var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
+var startPosition = {x: 4, y: 39};
 
 // entrypoint
 m.start = function() {
-
 	function load_tmx(tmx) {
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
+				
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
-					tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+					if (tileInfos.tile.properties instanceof Array) {
+						tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+					}
+					
 					var type;
 					switch (tileInfos.tile.properties.type) {
+					
 						case 'triggerWorld' :
 							type = 'BoxButton';
 							break;
@@ -70,11 +76,17 @@ m.start = function() {
 						case 'trap':
 							type = 'TrapTarget';
 							break;
+							
+						case 'mortal':
+							type = 'DeathZone';
+							break;
 
-						default:
-							type = 'Wall';
-					}
-					new m[type](tileInfos);
+                        default:
+                            type = 'Wall';
+                    }
+                    if (tileInfos.tile.properties.type != 'ignore') {
+                    	new m[type](tileInfos);
+                    }
 				});
 			}
 		}
@@ -84,6 +96,7 @@ m.start = function() {
 	}
 	
 	function tmx_tile_parse_property(tile) {
+		
 		var values = {};
 		if (tile.properties.length > 0) {
 			tile.properties.forEach(function(prop) {
@@ -106,33 +119,36 @@ m.start = function() {
 	// World
 	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(-1000, -1000);
-	bounds.maxVertex.Set(1000,1000);
+	bounds.minVertex.Set(0, 0);
+	bounds.maxVertex.Set(1700,1700);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
 	var scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/area02.tmx');
+	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
 	layers = {
-		background: new lime.Layer().setPosition(0,0),
-		walls: new lime.Layer().setPosition(0,0),
-		decorations: new lime.Layer().setPosition(0, 0),
-		objects: new lime.Layer().setPosition(0,0),
-		foreground: new lime.Layer().setPosition(0,0)
+		background: new lime.Layer().setPosition(0,-1000),
+		walls: new lime.Layer().setPosition(0,-1000),
+		decorations: new lime.Layer().setPosition(0, -1000),
+		objects: new lime.Layer().setPosition(0,-1000),
+		foreground: new lime.Layer().setPosition(0,-1000)
 	};
 	load_tmx(tmx);
 	
 
    	// Level
-	player = new m.Player({x: 5, y: 2});
-	new m.Box({x: 13 * tilesSize, y: 1 * tilesSize});
-	new m.Platform({x: 100, y: 200});
-	new m.PlayerButton({x:5 * tilesSize, y: 12 * tilesSize, tile: { properties: { targetName:'door1' , actionOn:'switch', actionOff:'switch'} } } );
-	new m.BoxButton({x:13 * tilesSize, y: 12 * tilesSize, tile: { properties: { targetName:'trap1' , actionOn:'switch', actionOff:'switch'} } } );
-	new m.DoorTarget({x:7 * tilesSize, y: 11 * tilesSize, tile: { properties: { name:'door1' } } });
-	new m.TrapTarget({x:9 * tilesSize, y: 12 * tilesSize, tile: { properties: { name:'trap1' } } });
+
+
+	player = new m.Player(startPosition);
+	//new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
+	//new m.PlayerButton({x:5, y: 12});
+	//new m.Platform({x: 100, y: 200});
+	//new m.Door({x:7, y: 11, tile : { properties : {} } });
+	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
+
+
 	
 
    	// Initialization
