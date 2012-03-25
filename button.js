@@ -19,9 +19,11 @@ m.Button = function(tileInfos) {
 goog.inherits(m.Button, m.Entity);
 
 m.Button.prototype.createObject = function() {
-	return new lime.Circle()
-	    .setSize(8, 8)
-	    .setFill( this.color );
+    var fill = this.frames[this.active ? 'active' : 'unactive'];
+	return new lime.RoundedRect()
+	    .setSize(32, 32)
+        .setRadius(0)
+	    .setFill( fill ? fill : this.color );
 };
 
 m.Button.prototype.createShapeDefs = function() {
@@ -33,12 +35,18 @@ m.Button.prototype.activate = function() {
 		targets[ this.targetName ].action( this.actionOn );
 	}
 	this.active = true;
+    if (this.frames.active) {
+    	this.object.setFill(this.frames.active);
+    }
 };
 m.Button.prototype.desactivate = function() {
 	if ( this.active && targets[ this.targetName ] ) { 
 		targets[ this.targetName ].action( this.actionOff );
 	}
 	this.active = false;
+    if (this.frames.unactive) {
+    	this.object.setFill(this.frames.unactive);
+    }
 };
 m.Button.prototype.trigger = function() {
 	if (this.active) {

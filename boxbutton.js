@@ -8,6 +8,10 @@ goog.require('m.Button');
  */
 m.BoxButton = function(tileInfos) {
 	this.color = new lime.fill.Color('#0000FF');
+	this.frames = {
+		active : new lime.fill.Image('resources/button_opened.png'),
+		unactive : new lime.fill.Image('resources/button_closed.png')
+	}
 	m.Button.call(this, tileInfos);
 };
 goog.inherits(m.BoxButton, m.Button);

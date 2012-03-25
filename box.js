@@ -16,7 +16,7 @@ m.Box.prototype.createObject = function() {
 	return new lime.RoundedRect()
 	.setRadius(4)
 	.setSize(30,30)
-	.setFill(0,255,0);
+	.setFill(new lime.fill.Image('resources/box.png'));
 };
 
 m.Box.prototype.createShapeDefs = function() {
