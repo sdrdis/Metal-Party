@@ -6,9 +6,9 @@ goog.require('m.Entity');
  * A box
  * @constructor
  */
-m.Box = function(position) {
+m.Box = function(tileInfos) {
 	this.buttons = {};
-	m.Entity.call(this, 'objects', position, {density: 1, restitution: 0.2, friction: 20});
+	m.Entity.call(this, 'objects', {x: tileInfos.px, y: tileInfos.py}, {density: 1, restitution: 0.2, friction: 20});
 };
 goog.inherits(m.Box, m.Entity);
 

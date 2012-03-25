@@ -94,6 +94,7 @@ m.start = function() {
 
         if (tileInfos.tile.properties instanceof Array) {
             tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+            /*
             if (tileInfos.tile.properties.type == 'box') {
                 tileInfos.tile.x *= tileInfos.x;
                 tileInfos.tile.y *= tileInfos.y;
@@ -102,6 +103,7 @@ m.start = function() {
                 tileInfos.x = tileInfos.tile.px;
                 tileInfos.y = tileInfos.tile.py;
             }
+            */
         }
 
         var type;
