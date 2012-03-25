@@ -43,57 +43,96 @@ var tilesSize = 32;
 var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
-var startPosition = {x: 4, y: 39};
+var startPosition = {x: 4, y: 4};
 
 // entrypoint
 m.start = function() {
 	function load_tmx(tmx) {
+        console.log(tmx);
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 				
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
-					if (tileInfos.tile.properties instanceof Array) {
-						tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-					}
-					
-					var type;
-					switch (tileInfos.tile.properties.type) {
-					
-						case 'triggerWorld' :
-							type = 'BoxButton';
-							break;
-
-						case 'triggerPlayer':
-							type = 'PlayerButton';
-							break;
-
-						case 'door':
-							type = 'DoorTarget';
-							break;
-
-						case 'trap':
-							type = 'TrapTarget';
-							break;
-							
-						case 'mortal':
-							type = 'DeathZone';
-							break;
-
-                        default:
-                            type = 'Wall';
-                    }
-                    if (tileInfos.tile.properties.type != 'ignore') {
-                    	new m[type](tileInfos);
-                    }
+                    add_tile(tileInfos);
 				});
 			}
 		}
+        for (var i=0; i<tmx.objects.length; i++) {
+            var obj = tmx.objects[i];
+            var tile;
+            if (obj.tile) {
+                tile = obj.tile;
+            } else {
+                tile = {
+                    properties : obj.properties
+                }
+            }
+            add_tile({
+                x : obj.px,
+                y : obj.py,
+                tile : tile
+            });
+        }
 		for ( var key in layers ) {
 			scene.appendChild(layers[ key ]);
 		}
 	}
+
+    function add_tile(tileInfos) {
+
+        if (tileInfos.tile.properties instanceof Array) {
+            tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+            if (tileInfos.tile.properties.type == 'box') {
+                tileInfos.tile.x *= tileInfos.x;
+                tileInfos.tile.y *= tileInfos.y;
+                tileInfos.tile.px = tileInfos.x * tilesSize;
+                tileInfos.tile.py = tileInfos.y * tilesSize;
+                tileInfos.x = tileInfos.tile.px;
+                tileInfos.y = tileInfos.tile.py;
+            }
+        }
+
+        var type;
+        switch (tileInfos.tile.properties.type) {
+
+            case 'triggerWorld' :
+                type = 'BoxButton';
+                break;
+
+            case 'triggerPlayer':
+                type = 'PlayerButton';
+                break;
+
+            case 'door':
+                type = 'DoorTarget';
+                break;
+
+            case 'trap':
+                type = 'TrapTarget';
+                break;
+
+            case 'mortal':
+                type = 'DeathZone';
+                break;
+
+            case 'box':
+                type = 'Box';
+                break;
+
+            case 'vertical':
+            case 'horizontal':
+                type = 'Platform';
+                break;
+
+            default:
+                type = 'Wall';
+        }
+        if (tileInfos.tile.properties.type != 'ignore') {
+            new m[type](tileInfos);
+        }
+    }
 	
 	function tmx_tile_parse_property(tile) {
 		
@@ -127,13 +166,13 @@ m.start = function() {
 	var scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
+	var tmx = new lime.parser.TMX('resources/test-area-test.tmx');
 	layers = {
-		background: new lime.Layer().setPosition(0,-1000),
-		walls: new lime.Layer().setPosition(0,-1000),
-		decorations: new lime.Layer().setPosition(0, -1000),
-		objects: new lime.Layer().setPosition(0,-1000),
-		foreground: new lime.Layer().setPosition(0,-1000)
+		background: new lime.Layer().setPosition(0,0),
+		walls: new lime.Layer().setPosition(0,0),
+		decorations: new lime.Layer().setPosition(0, 0),
+		objects: new lime.Layer().setPosition(0,0),
+		foreground: new lime.Layer().setPosition(0,0)
 	};
 	load_tmx(tmx);
 	
