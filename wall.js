@@ -16,9 +16,9 @@ goog.inherits(m.Wall, m.Entity);
 
 m.Wall.prototype.createObject = function() {
 	if (this.image) {
-        return new lime.Sprite()
-        .setSize(tilesSize,tilesSize)
-        .setFill(this.image);
+		return new lime.Sprite()
+			.setSize(tilesSize,tilesSize)
+			.setFill(this.image);
 	} else {
 		return m.Wall.superClass_.createObject.call();
 	}
@@ -32,3 +32,4 @@ m.Wall.prototype.createShapeDefs = function() {
 
 m.Wall.prototype.update = function(dt) {
 }
+
