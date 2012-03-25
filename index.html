@@ -4,8 +4,12 @@
 	<title>TELLURA Factory</title>
 	<link rel="stylesheet" type="text/css" href="./normalize.css" />
 	<style type="text/css">
+		html, body{
+			min-height: 100%;
+		}
 		body {
-			background-color: #232323;
+			background: url('background.jpg') repeat-x;
+			background-size: auto 100%;
 		}
 		.container {
 			width: 700px;
@@ -19,17 +23,19 @@
 		}
 		.gameFrame {
 			border: 1px #63625E solid;
+			background-color: rgba( 0, 0, 0, 0.7 );
 			margin: 0 auto;
 		}
 	</style>
+	<link href="./favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
-	<audio autoplay="true" loop="true" preload="true">
+	<audio autoplay loop preload>
 	 <source src="./resources/music.ogg" type="audio/ogg" />
 	</audio>
 	<div class="container">
 		<div class="header">
-			<img src="LogoTELLURA.jpg" />
+			<img src="headerTELLURA.jpg" />
 		</div>
 		<div class="gameContainer">
 			<iframe src="./metalparty.html" width="640" height="480" class="gameFrame" />

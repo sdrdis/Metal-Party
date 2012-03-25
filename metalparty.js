@@ -14,6 +14,7 @@ goog.require('m.DoorTarget');
 goog.require('m.TrapTarget');
 goog.require('m.DeathZone');
 goog.require('m.ManualAnimation');
+goog.require('m.Anchor');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -45,11 +46,10 @@ var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 
-var startPosition = {x: 4, y: 4};
+var startPosition = {x: 4, y: 36};
 var scene;
 var worldSize = {width: 0, height: 0};
 
-//var startPosition = {x: 4, y: 4};
 
 /** @const */ pixelPerMeter = 1;
 
@@ -79,8 +79,10 @@ m.start = function() {
                 }
             }
             add_tile({
-                x : obj.px,
-                y : obj.py,
+                x : obj.x,
+                y : obj.y,
+                px : obj.px,
+                py : obj.py,
                 tile : tile
             });
         }
@@ -93,6 +95,7 @@ m.start = function() {
 
         if (tileInfos.tile.properties instanceof Array) {
             tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+            /*
             if (tileInfos.tile.properties.type == 'box') {
                 tileInfos.tile.x *= tileInfos.x;
                 tileInfos.tile.y *= tileInfos.y;
@@ -101,6 +104,7 @@ m.start = function() {
                 tileInfos.x = tileInfos.tile.px;
                 tileInfos.y = tileInfos.tile.py;
             }
+            */
         }
 
         var type;
@@ -128,6 +132,10 @@ m.start = function() {
 
             case 'box':
                 type = 'Box';
+                break;
+                
+            case 'anchor':
+                type = 'Anchor';
                 break;
 
             case 'vertical':
@@ -175,7 +183,7 @@ m.start = function() {
 	scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/test-area-test.tmx');
+	var tmx = new lime.parser.TMX('resources/level01a.tmx');
 	layers = {
 		background: new lime.Layer().setPosition(0,0),
 		walls: new lime.Layer().setPosition(0,0),
@@ -186,15 +194,8 @@ m.start = function() {
 	load_tmx(tmx);
 	
 
-   	// Level
-
-
+   	// Player
 	player = new m.Player(startPosition);
-	//new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
-	//new m.PlayerButton({x:5, y: 12});
-	//new m.Platform({x: 100, y: 200});
-	//new m.Door({x:7, y: 11, tile : { properties : {} } });
-	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
 
    	// Initialization
    	lime.scheduleManager.schedule(function(dt) {

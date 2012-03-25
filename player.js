@@ -22,6 +22,7 @@ m.Player = function(coordinate) {
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
 	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
+	this.lastUpdate = 0;
 
 	lime.scheduleManager.schedule(function(dt) {
 		// Handling
@@ -33,24 +34,37 @@ m.Player = function(coordinate) {
 			}
 		}
 		var sceneSize = scene.getSize();
-		
+		this.lastUpdate += dt;
+		/*
+		if (this.lastUpdate > 20) {
+			this.lastUpdate = 0;
+		*/
 		//console.log(this.body.GetCenterPosition().x - sceneSize.width / 2, worldSize.width * tilesSize + sceneSize.width / 2);
 
 		//console.log(worldSize.width * tilesSize - sceneSize.width / 2);
-		var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
-		var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
-		for ( var key in layers ) {
-			layers[ key ].setPosition(-x, -y);
-		}
+			var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
+			var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
+			for ( var key in layers ) {
+				layers[ key ].setPosition(-x, -y);
+			}
+		//}
 	},this);
 };
 goog.inherits(m.Player, m.Entity);
+
+m.Player.prototype.getWidthInTile = function() {
+	return 1;
+}
+
+m.Player.prototype.getHeightInTile = function() {
+	return 2;
+}
 
 m.Player.prototype.createObject = function() {
 	var layer = new lime.Layer();
 	
 	var bw = 28, bh = 53;
-	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(bw,bh);
+	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(bw,bh).setPosition(0,0);
 	var bodyAnim = new m.ManualAnimation([
 			{path: 'resources/player/body1.png', w: bw, h:bh},
 			{path: 'resources/player/body1flip.png', w: bw, h:bh},
@@ -64,7 +78,7 @@ m.Player.prototype.createObject = function() {
 			{path: 'resources/player/rightarmflip.png', w: 32, h:32}
 		]);
 	backHandSprite.runAction(backHandAnim);
-	var frontHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(-2,7);
+	var frontHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(-4,7);
 	var frontHandAnim = new m.ManualAnimation([
 			{path: 'resources/player/rightarm.png', w: 32, h:32},
 			{path: 'resources/player/leftarmflip.png', w: 32, h:32}
@@ -98,12 +112,12 @@ m.Player.prototype.moveTo = function(coordinate) {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef();
-	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
-	shapeDefB.localPosition.Set(0, -0.20 * tilesSize);
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.6);
+	shapeDefB.localPosition.Set(0, -0.4 * tilesSize);
 	
 	var shapeDefC = new box2d.CircleDef();
 	shapeDefC.radius = 0.45 * tilesSize;
-	shapeDefC.localPosition.Set(0, 0.35 * tilesSize);
+	shapeDefC.localPosition.Set(0, 0.20 * tilesSize);
 	
 	return [ shapeDefB, shapeDefC ];
 };
@@ -159,6 +173,7 @@ m.Player.prototype.onKeyUp = function(e) {
 			
 		case codes.UP:
 			this.jump = false;
+			delete this.jumpingTime;
 			break;
 			
 		default:
@@ -186,9 +201,20 @@ m.Player.prototype.beforePhysics = function() {
 	var grounded = false;
 	var contact = this.body.GetContactList();
 	while (contact) {
-		if (contact.contact.m_shape1 == this.shapes[0] || contact.contact.m_shape2 == this.shapes[0]) {
-			grounded = true;
-			break;
+		if (contact.contact.m_shape1 == this.shapes[0]) {
+			var angle = Math.atan2(contact.contact.m_shape1.m_position.y - contact.contact.m_shape2.m_position.y, contact.contact.m_shape1.m_position.x - contact.contact.m_shape2.m_position.x);
+			if (Math.abs(- Math.PI / 2 - angle) < 0.5) {
+				grounded = true;
+				break;
+			}
+		}
+		if (contact.contact.m_shape2 == this.shapes[0]) {
+			var angle = Math.atan2(contact.contact.m_shape1.m_position.y - contact.contact.m_shape2.m_position.y, contact.contact.m_shape1.m_position.x - contact.contact.m_shape2.m_position.x);
+			console.log(angle);
+			if (Math.abs(Math.PI / 2 - angle) < 0.5) {
+				grounded = true;
+				break;
+			}
 		}
 		contact = contact.next;
 	}
@@ -198,16 +224,16 @@ m.Player.prototype.beforePhysics = function() {
 		this.body.SetLinearVelocity(vel);
 	}
 	
-	if (this.jump) {
-		//this.jump = false;
-		if (grounded) {
-			vel.y = 0;
-			this.body.SetLinearVelocity(vel);
-			var pos = this.body.GetOriginPosition();
-			pos.y -= 1;
-			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -1400000), pos);
-		}
+	if (this.jump && grounded) {
+		this.jumpingTime = this.t + 200;
+		var pos = this.body.GetOriginPosition();
+		pos.y -= 1;
+		this.body.SetOriginPosition(pos, 0);
+	}
+	
+	if (this.jumpingTime !== undefined) {
+		vel.y = -300;
+		this.body.SetLinearVelocity(vel);
 	}
 }
 
@@ -242,10 +268,22 @@ m.Player.prototype.update = function(dt) {
 		this.animDirection = newAnimDirection;
 	}
 	
+	// Arms movement
+	var armsFrame = 0;
+	if (!isWalking) {
+		var tt = this.t % 1000;
+		armsFrame = (tt < 500) ? (tt/200) : (5 - tt/200);
+	}
+	this.sprites.backHand.setPosition(0, armsFrame);
+	this.sprites.frontHand.setPosition(-8 * this.animDirection + 4, armsFrame + 4);
+	
+	if (this.jumpingTime && this.t > this.jumpingTime) {
+		delete this.jumpingTime;
+	}
 };
 
 m.Player.prototype.onMouseMove = function(e) {
-	// Update hands rotation
+	// Update hands position
 	/*var dx = e.event.clientX - player.object.getPosition().x;
 	var dy = e.event.clientY - player.object.getPosition().y;
 	var adx = Math.abs(dx);
