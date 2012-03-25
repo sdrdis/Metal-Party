@@ -198,8 +198,8 @@ m.Entity.prototype.onMouseDown = function(e) {
 			this.body.ApplyForce(vect, this.body.GetOriginPosition());
 		} else {
 			vect = vect.Negative();
-			vect.x *= 4;
-			vect.y *= 4;
+			vect.x *= 3;
+			vect.y *= 3;
 			player.body.ApplyForce(vect, this.body.GetOriginPosition());
 		}
 	};

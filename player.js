@@ -210,7 +210,6 @@ m.Player.prototype.beforePhysics = function() {
 		}
 		if (contact.contact.m_shape2 == this.shapes[0]) {
 			var angle = Math.atan2(contact.contact.m_shape1.m_position.y - contact.contact.m_shape2.m_position.y, contact.contact.m_shape1.m_position.x - contact.contact.m_shape2.m_position.x);
-			console.log(angle);
 			if (Math.abs(Math.PI / 2 - angle) < 0.5) {
 				grounded = true;
 				break;
