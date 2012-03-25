@@ -14,6 +14,7 @@ goog.require('m.DoorTarget');
 goog.require('m.TrapTarget');
 goog.require('m.DeathZone');
 goog.require('m.ManualAnimation');
+goog.require('m.Anchor');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -45,7 +46,7 @@ var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 
-var startPosition = {x: 3, y: 6};
+var startPosition = {x: 4, y: 36};
 var scene;
 var worldSize = {width: 0, height: 0};
 
@@ -130,6 +131,10 @@ m.start = function() {
             case 'box':
                 type = 'Box';
                 break;
+                
+            case 'anchor':
+                type = 'Anchor';
+                break;
 
             case 'vertical':
             case 'horizontal':
@@ -176,7 +181,7 @@ m.start = function() {
 	scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/test-area-test.tmx');
+	var tmx = new lime.parser.TMX('resources/level01a.tmx');
 	layers = {
 		background: new lime.Layer().setPosition(0,0),
 		walls: new lime.Layer().setPosition(0,0),
