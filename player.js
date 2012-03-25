@@ -77,8 +77,11 @@ m.Player.prototype.createObject = function() {
 	return layer;
 };
 
-m.Player.prototype.moveTo = function(position) {
-	
+m.Player.prototype.moveTo = function(coordinate) {
+	var pos = this.convertCoordToPos(coordinate);
+	var posVect = new box2d.Vec2(pos.x, pos.y);
+	this.body.SetOriginPosition(posVect, 0);
+	this.object.setPosition(posVect);
 }
 
 m.Player.prototype.createShapeDefs = function() {
