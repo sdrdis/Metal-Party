@@ -13,7 +13,7 @@ m.Target = function(coordinate) {
 	for ( key in this.frames ) {
 		this.frames[key].setSize(this.width, this.height).setOffset(0, 0);
 	}
-	m.Entity.call(this, 'decorations', this.convertCoordToPos(coordinate), {density: 0, restitution: 0});
+	m.Entity.call(this, 'decorations', coordinate, {density: 0, restitution: 0});
 	targets[this['name']] = this;
 };
 goog.inherits(m.Target, m.Entity);

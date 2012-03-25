@@ -126,11 +126,12 @@ m.start = function() {
 
    	// Level
 	player = new m.Player({x: 5, y: 2});
-	new m.Box({x: 14 * tilesSize, y: 2 * tilesSize});
+	new m.Box({x: 13 * tilesSize, y: 1 * tilesSize});
 	new m.Platform({x: 100, y: 200});
-	new m.PlayerButton({x:5, y: 12, tile: { properties: { targetName:'door1' , actionOn:'switch', actionOff:'switch'} } } );
-	new m.DoorTarget({x:7, y: 11, tile: { properties: { name:'door1' } } });
-	new m.TrapTarget({x:9, y: 12, tile: { properties: { name:'trap1' } } });
+	new m.PlayerButton({x:5 * tilesSize, y: 12 * tilesSize, tile: { properties: { targetName:'door1' , actionOn:'switch', actionOff:'switch'} } } );
+	new m.BoxButton({x:13 * tilesSize, y: 12 * tilesSize, tile: { properties: { targetName:'trap1' , actionOn:'switch', actionOff:'switch'} } } );
+	new m.DoorTarget({x:7 * tilesSize, y: 11 * tilesSize, tile: { properties: { name:'door1' } } });
+	new m.TrapTarget({x:9 * tilesSize, y: 12 * tilesSize, tile: { properties: { name:'trap1' } } });
 	
 
    	// Initialization

@@ -74,16 +74,7 @@ m.Player.prototype.onKeyDown = function(e) {
 };
 
 m.Player.prototype.getButtons = function() {
-	var myButtons = [];
-	for ( var i=0; i<buttons.length; i++ ) {
-		var button = buttons[i];
-		if ( button instanceof m.PlayerButton ) {
-			if ( button.inFrontOfEntity( this ) ) {
-				myButtons.push(button);
-			}
-		}
-	}
-	return myButtons;
+	return m.Player.superClass_.getOverEntities.call(this, buttons, m.PlayerButton);
 };
 
 m.Player.prototype.onKeyUp = function(e) {
