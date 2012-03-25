@@ -21,7 +21,7 @@ m.Box.prototype.createObject = function() {
 
 m.Box.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	shapeDef.extents.Set(0.4, 0.4);
+	shapeDef.extents.Set(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];
 };
 

@@ -5,6 +5,11 @@
  </tileset>
  <tileset firstgid="17" name="area01_level_tiles" tilewidth="32" tileheight="32">
   <image source="testarea_tileset/area01_level_tiles.png" width="640" height="241"/>
+  <tile id="21">
+   <properties>
+    <property name="type" value="box"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="foreground" width="20" height="15">
   <data encoding="base64">

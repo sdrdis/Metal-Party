@@ -26,7 +26,7 @@ m.Wall.prototype.createObject = function() {
 
 m.Wall.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	shapeDef.extents = new box2d.Vec2(0.5, 0.5);
+	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];
 };
 
