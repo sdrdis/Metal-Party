@@ -22,6 +22,7 @@ m.Player = function(coordinate) {
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
 	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
+	this.lastUpdate = 0;
 
 	lime.scheduleManager.schedule(function(dt) {
 		// Handling
@@ -33,18 +34,31 @@ m.Player = function(coordinate) {
 			}
 		}
 		var sceneSize = scene.getSize();
-		
+		this.lastUpdate += dt;
+		/*
+		if (this.lastUpdate > 20) {
+			this.lastUpdate = 0;
+		*/
 		//console.log(this.body.GetCenterPosition().x - sceneSize.width / 2, worldSize.width * tilesSize + sceneSize.width / 2);
 
 		//console.log(worldSize.width * tilesSize - sceneSize.width / 2);
-		var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
-		var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
-		for ( var key in layers ) {
-			layers[ key ].setPosition(-x, -y);
-		}
+			var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
+			var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
+			for ( var key in layers ) {
+				layers[ key ].setPosition(-x, -y);
+			}
+		//}
 	},this);
 };
 goog.inherits(m.Player, m.Entity);
+
+m.Player.prototype.getWidthInTile = function() {
+	return 1;
+}
+
+m.Player.prototype.getHeightInTile = function() {
+	return 2;
+}
 
 m.Player.prototype.createObject = function() {
 	var layer = new lime.Layer();

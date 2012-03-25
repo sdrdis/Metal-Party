@@ -4,8 +4,12 @@
 	<title>TELLURA Factory</title>
 	<link rel="stylesheet" type="text/css" href="./normalize.css" />
 	<style type="text/css">
+		html, body{
+			min-height: 100%;
+		}
 		body {
-			background-color: #232323;
+			background: url('background.jpg') repeat-x;
+			background-size: auto 100%;
 		}
 		.container {
 			width: 700px;
@@ -19,6 +23,7 @@
 		}
 		.gameFrame {
 			border: 1px #63625E solid;
+			background-color: rgba( 0, 0, 0, 0.7 );
 			margin: 0 auto;
 		}
 		.github {
@@ -39,6 +44,7 @@
 			opacity: 1;
 		}
 	</style>
+	<link href="./favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
 	<a class="github" href="https://github.com/sdrdis/Metal-Party" target="_blank"><img src="https://a248.e.akamai.net/assets.github.com/img/bec6c51521dcc8148146135149fe06a9cc737577/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub">&nbsp;</a>
@@ -48,7 +54,7 @@
 	</audio>
 	<div class="container">
 		<div class="header">
-			<img src="LogoTELLURA.jpg" />
+			<img src="headerTELLURA.jpg" />
 		</div>
 		<div class="gameContainer">
 			<iframe src="./metalparty.html" width="640" height="480" class="gameFrame" />
