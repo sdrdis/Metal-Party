@@ -167,7 +167,7 @@ m.Entity.prototype.onMouseDown = function(e) {
 		vect.y = vect.y * dt;
 		
 		
-		if (this.body.density > 0) {
+		if (!this.isAnchor) {
 			this.body.ApplyForce(vect, this.body.GetOriginPosition());
 		} else {
 			vect = vect.Negative();
