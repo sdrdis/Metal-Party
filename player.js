@@ -21,6 +21,15 @@ m.Player = function(coordinate) {
 	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
+
+	lime.scheduleManager.schedule(function(dt) {
+		var contactZone = this.body.GetContactList();
+		if (contactZone) {
+			if (contactZone.other.isDeathZone) {
+				this.moveTo(startPosition);
+			}
+		}
+	},this);
 	goog.events.listen(this.object, ['mousemove'], this.onMouseMove, false, this);
 };
 goog.inherits(m.Player, m.Entity);
@@ -68,12 +77,19 @@ m.Player.prototype.createObject = function() {
 	return layer;
 };
 
+m.Player.prototype.moveTo = function(coordinate) {
+	var pos = this.convertCoordToPos(coordinate);
+	var posVect = new box2d.Vec2(pos.x, pos.y);
+	this.body.SetOriginPosition(posVect, 0);
+	this.object.setPosition(posVect);
+}
+
 m.Player.prototype.createShapeDefs = function() {
-	var shapeDefB = new box2d.BoxDef;
+	var shapeDefB = new box2d.BoxDef();
 	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
 	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
 	
-	var shapeDefC = new box2d.CircleDef;
+	var shapeDefC = new box2d.CircleDef();
 	shapeDefC.radius = tilesSize * 0.45;
 	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
 	
