@@ -21,6 +21,7 @@ m.Player = function(coordinate) {
 	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
+	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
 
 	lime.scheduleManager.schedule(function(dt) {
 		var contactZone = this.body.GetContactList();
@@ -30,7 +31,6 @@ m.Player = function(coordinate) {
 			}
 		}
 	},this);
-	goog.events.listen(this.object, ['mousemove'], this.onMouseMove, false, this);
 };
 goog.inherits(m.Player, m.Entity);
 
@@ -205,7 +205,7 @@ m.Player.prototype.update = function(dt) {
 	this.t += dt;
 	
 	// Gather data
-	var isWalking = Math.abs(this.body.GetLinearVelocity().x) > 5;
+	var isWalking = Math.abs(this.body.GetLinearVelocity().x) > 50;
 	var newAnimFrame;
 	if (isWalking) {
 		newAnimFrame = (this.t % 400 < 200) ? 0 : 2;
@@ -234,5 +234,22 @@ m.Player.prototype.update = function(dt) {
 
 m.Player.prototype.onMouseMove = function(e) {
 	// Update hands rotation
-	console.log(e.event);
+	/*var dx = e.event.clientX - player.object.getPosition().x;
+	var dy = e.event.clientY - player.object.getPosition().y;
+	var adx = Math.abs(dx);
+	var ady = Math.abs(dy);
+	var d = Math.sqrt(adx*adx+ady*ady);
+	var alpha = Math.acos(adx/d) * 180 / Math.PI;
+	
+	//if (this.leftPressed) {
+		this.setHandRotation((this.animDirection == 0) ? this.sprites.backHand : this.sprites.frontHand, alpha);
+	//}
+	//if (this.rightPressed) {
+		this.setHandRotation((this.animDirection == 0) ? this.sprites.frontHand : this.sprites.backHand, alpha);
+	//}
+	*/
 };
+
+m.Player.prototype.setHandRotation = function(hand, rotation) {
+	hand.setRotation(rotation);
+}
