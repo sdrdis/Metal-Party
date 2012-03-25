@@ -21,10 +21,14 @@ m.Player = function(coordinate) {
 goog.inherits(m.Player, m.Entity);
 
 m.Player.prototype.createObject = function() {
-	return new lime.RoundedRect()
-	.setRadius(4)
-	.setSize(31,63)
-	.setFill(255,0,0);
+	var sprite =  new lime.RoundedRect()
+		.setRadius(0)
+		.setSize(32,64);
+	sprite.runAction(new m.ManualAnimation([
+			{path: 'resources/player/body1.png', w: 32, h:64},
+			{path: 'resources/player/body2.png', w: 32, h:64}
+		]));
+	return sprite;
 };
 
 m.Player.prototype.createShapeDefs = function() {
