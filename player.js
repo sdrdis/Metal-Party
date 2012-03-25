@@ -2,6 +2,7 @@ goog.provide('m.Player');
 
 goog.require('goog.events.KeyCodes');
 goog.require('box2d.Vec2');
+goog.require('m.Entity');
 
 /**
  * The player
@@ -20,19 +21,23 @@ m.Player = function(coordinate) {
 goog.inherits(m.Player, m.Entity);
 
 m.Player.prototype.createObject = function() {
-	return new lime.RoundedRect()
-	.setRadius(4)
-	.setSize(31,63)
-	.setFill(255,0,0);
+	var sprite =  new lime.RoundedRect()
+		.setRadius(0)
+		.setSize(32,64);
+	sprite.runAction(new m.ManualAnimation([
+			{path: 'resources/player/body1.png', w: 32, h:64},
+			{path: 'resources/player/body2.png', w: 32, h:64}
+		]));
+	return sprite;
 };
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef;
-	shapeDefB.extents.Set(tilesSize / 2, tilesSize * 0.80);
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
 	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
 	
 	var shapeDefC = new box2d.CircleDef;
-	shapeDefC.radius = tilesSize * 0.55;
+	shapeDefC.radius = tilesSize * 0.45;
 	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
 	
 	return [ shapeDefB, shapeDefC ];
@@ -77,7 +82,7 @@ m.Player.prototype.getButtons = function() {
 	for ( var i=0; i<buttons.length; i++ ) {
 		var button = buttons[i];
 		if ( button instanceof m.PlayerButton ) {
-			if ( button.collideWithEntity( this ) ) {
+			if ( button.inFrontOfEntity( this ) ) {
 				myButtons.push(button);
 			}
 		}

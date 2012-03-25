@@ -1,5 +1,5 @@
 //set main namespace
-goog.provide('metalparty');
+goog.provide('m');
 
 goog.require('m.Entity');
 goog.require('m.Player');
@@ -9,8 +9,10 @@ goog.require('m.Button');
 goog.require('m.PlayerButton');
 goog.require('m.BoxButton');
 goog.require('m.Platform');
-goog.require('m.Door');
-goog.require('m.Trap');
+goog.require('m.Target');
+goog.require('m.DoorTarget');
+goog.require('m.TrapTarget');
+goog.require('m.ManualAnimation');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -37,12 +39,12 @@ goog.require('lime.parser.TMX');
 
 // Globals
 var tilesSize = 32;
-var layers, references = [], buttons = [], targets = {};
+var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 
 // entrypoint
-metalparty.start = function() {
+m.start = function() {
 
 	function load_tmx(tmx) {
 		for ( var i=0; i<tmx.layers.length; i++ ) {
@@ -51,27 +53,27 @@ metalparty.start = function() {
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
 					tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-                    var type;
-                    switch (tileInfos.tile.properties.type) {
-                        case 'triggerWorld' :
-                            type = 'BoxButton';
-                            break;
+					var type;
+					switch (tileInfos.tile.properties.type) {
+						case 'triggerWorld' :
+							type = 'BoxButton';
+							break;
 
-                        case 'triggerPlayer':
-                            type = 'PlayerButton';
-                            break;
+						case 'triggerPlayer':
+							type = 'PlayerButton';
+							break;
 
-                        case 'door':
-                            type = 'Door';
-                            break;
+						case 'door':
+							type = 'DoorTarget';
+							break;
 
-                        case 'trap':
-                            type = 'Trap';
-                            break;
+						case 'trap':
+							type = 'TrapTarget';
+							break;
 
-                        default:
-                            type = 'Wall';
-                    }
+						default:
+							type = 'Wall';
+					}
 					new m[type](tileInfos);
 				});
 			}
@@ -125,11 +127,11 @@ metalparty.start = function() {
 
    	// Level
 	player = new m.Player({x: 5, y: 2});
-	new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
-	//new m.PlayerButton({x:5, y: 12});
+	new m.Box({x: 14 * tilesSize, y: 2 * tilesSize});
 	new m.Platform({x: 100, y: 200});
-	new m.Door({x:7, y: 11, tile : { properties : {} } });
-	new m.Trap({x:9, y: 12, tile : { properties : {} } });
+	new m.PlayerButton({x:5, y: 12, tile: { properties: { targetName:'door1' , actionOn:'switch', actionOff:'switch'} } } );
+	new m.DoorTarget({x:7, y: 11, tile: { properties: { name:'door1' } } });
+	new m.TrapTarget({x:9, y: 12, tile: { properties: { name:'trap1' } } });
 	
 
    	// Initialization
@@ -146,4 +148,4 @@ metalparty.start = function() {
 }
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
-goog.exportSymbol('metalparty.start', metalparty.start);
+goog.exportSymbol('m.start', m.start);
