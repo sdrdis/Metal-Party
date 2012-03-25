@@ -9,7 +9,7 @@ goog.require('m.Entity');
  * @constructor
  */
 m.Player = function(coordinate) {
-	m.Entity.call(this, 'objects', this.convertCoordToPos(coordinate), {density: 1, preventRotation: true, allowSleep: false});
+	m.Entity.call(this, 'objects', this.convertCoordToPos(coordinate), {density: 1, restitution: 1, preventRotation: true, allowSleep: false});
 
 	this.leftPressed = false;
 	this.rightPressed = false;
@@ -21,6 +21,7 @@ m.Player = function(coordinate) {
 	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
+	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
 
 	lime.scheduleManager.schedule(function(dt) {
 		// Handling
@@ -41,7 +42,6 @@ m.Player = function(coordinate) {
 			layers[ key ].setPosition(-x, -y);
 		}
 	},this);
-	goog.events.listen(this.object, ['mousemove'], this.onMouseMove, false, this);
 };
 goog.inherits(m.Player, m.Entity);
 
@@ -97,12 +97,12 @@ m.Player.prototype.moveTo = function(coordinate) {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef();
-	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
-	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
+	shapeDefB.extents.Set(0.45, 0.80);
+	shapeDefB.localPosition.Set(0, -0.20);
 	
 	var shapeDefC = new box2d.CircleDef();
-	shapeDefC.radius = tilesSize * 0.45;
-	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
+	shapeDefC.radius = 0.45;
+	shapeDefC.localPosition.Set(0, 0.55);
 	
 	return [ shapeDefB, shapeDefC ];
 };
@@ -168,18 +168,18 @@ m.Player.prototype.onKeyUp = function(e) {
 
 m.Player.prototype.beforePhysics = function() {
 	var vel = this.body.GetLinearVelocity();
-	var max = 300;
+	var max = 0.3;
 	if (Math.abs(vel.x) > max) {
 		vel.x = (vel.x > 0) ? max : -max;
 		this.body.SetLinearVelocity(vel);
 	}
 	
 	if (this.leftPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(-50000, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(-0.5, 0), this.body.GetOriginPosition());
 	}
 	
 	if (this.rightPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(50000, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(0.5, 0), this.body.GetOriginPosition());
 	}
 	
 	var grounded = false;
@@ -197,17 +197,17 @@ m.Player.prototype.beforePhysics = function() {
 		this.body.SetLinearVelocity(vel);
 	}
 	
-	if (this.jump) {			
+	if (this.jump) {
 		//this.jump = false;
 		if (grounded) {
 			vel.y = 0;
 			this.body.SetLinearVelocity(vel);
 			var pos = this.body.GetOriginPosition();
-			pos.y -= 1;
+			pos.y -= 0.01;
 			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -1400000), pos);
+			this.body.ApplyImpulse(new box2d.Vec2(0, -1.4), pos);
 		}
-	}	
+	}
 }
 
 m.Player.prototype.update = function(dt) {
@@ -216,7 +216,7 @@ m.Player.prototype.update = function(dt) {
 	this.t += dt;
 	
 	// Gather data
-	var isWalking = Math.abs(this.body.GetLinearVelocity().x) > 5;
+	var isWalking = Math.abs(this.body.GetLinearVelocity().x) > 50;
 	var newAnimFrame;
 	if (isWalking) {
 		newAnimFrame = (this.t % 400 < 200) ? 0 : 2;
@@ -245,5 +245,22 @@ m.Player.prototype.update = function(dt) {
 
 m.Player.prototype.onMouseMove = function(e) {
 	// Update hands rotation
-	console.log(e.event);
+	/*var dx = e.event.clientX - player.object.getPosition().x;
+	var dy = e.event.clientY - player.object.getPosition().y;
+	var adx = Math.abs(dx);
+	var ady = Math.abs(dy);
+	var d = Math.sqrt(adx*adx+ady*ady);
+	var alpha = Math.acos(adx/d) * 180 / Math.PI;
+	
+	//if (this.leftPressed) {
+		this.setHandRotation((this.animDirection == 0) ? this.sprites.backHand : this.sprites.frontHand, alpha);
+	//}
+	//if (this.rightPressed) {
+		this.setHandRotation((this.animDirection == 0) ? this.sprites.frontHand : this.sprites.backHand, alpha);
+	//}
+	*/
 };
+
+m.Player.prototype.setHandRotation = function(hand, rotation) {
+	hand.setRotation(rotation);
+}
