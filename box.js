@@ -19,7 +19,7 @@ m.Box.prototype.createObject = function() {
 };
 
 m.Box.prototype.createShapeDefs = function() {
-	var shapeDef = new box2d.BoxDef;
-	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
+	var shapeDef = new box2d.BoxDef();
+	shapeDef.extents = new box2d.Vec2(0.5, 0.5);
 	return [ shapeDef ];
 };

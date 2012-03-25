@@ -28,8 +28,8 @@ m.Target.prototype.createShapeDefs = function() {
 	if (this.opened){
 		return [ ];
 	} else {
-		var shapeDef = new box2d.BoxDef;
-		shapeDef.extents = new box2d.Vec2(this.width / 2, this.height / 2);
+		var shapeDef = new box2d.BoxDef();
+		shapeDef.extents = new box2d.Vec2(this.width / 2 / tilesSize * pixelPerMeter, this.height / 2 / tilesSize * pixelPerMeter);
 		return [ shapeDef ];
 	}
 };

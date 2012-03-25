@@ -42,6 +42,8 @@ var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 
+/** @const */ pixelPerMeter = 100;
+
 // entrypoint
 m.start = function() {
 
@@ -103,10 +105,10 @@ m.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 1500);
+	var gravity = new box2d.Vec2(0, 20);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(-1000, -1000);
-	bounds.maxVertex.Set(1000,1000);
+	bounds.minVertex.Set(-100, -100);
+	bounds.maxVertex.Set(100,100);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
@@ -117,7 +119,7 @@ m.start = function() {
 	layers = {
 		background: new lime.Layer().setPosition(0,0),
 		walls: new lime.Layer().setPosition(0,0),
-		decorations: new lime.Layer().setPosition(0, 0),
+		decorations: new lime.Layer().setPosition(0,0),
 		objects: new lime.Layer().setPosition(0,0),
 		foreground: new lime.Layer().setPosition(0,0)
 	};
@@ -125,13 +127,14 @@ m.start = function() {
 	
 
    	// Level
-	player = new m.Player({x: 5, y: 2});
+	player = new m.Player({x: 10, y: 0});
+	/*
 	new m.Box({x: 14 * tilesSize, y: 2 * tilesSize});
 	new m.Platform({x: 100, y: 200});
 	new m.PlayerButton({x:5, y: 12, tile: { properties: { targetName:'door1' , actionOn:'switch', actionOff:'switch'} } } );
 	new m.DoorTarget({x:7, y: 11, tile: { properties: { name:'door1' } } });
 	new m.TrapTarget({x:9, y: 12, tile: { properties: { name:'trap1' } } });
-	
+*/
 
    	// Initialization
    	lime.scheduleManager.schedule(function(dt) {
