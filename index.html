@@ -7,26 +7,31 @@
 		html, body{
 			min-height: 100%;
 		}
-		body {
-			background: url('background.jpg') repeat-x;
-			background-size: auto 100%;
+		html {
+			padding: 10px;
+			background: url('./Header.jpg') no-repeat #232323;
+			background-size: 500px; 
 		}
 		.container {
-			width: 700px;
-			margin: 0 auto;
-		}
-		.header img {
-			width: 700px;
+			width: 852px;
+			margin: 0 0 0 auto;
 		}
 		.gameContainer {
-			padding-left: 29px;
+			padding: 79px 106px;
+			background: url('./cadre.jpg') no-repeat;
+			position: relative;
+			z-index: 1;
 		}
-		.gameFrame {
-			border: 1px #63625E solid;
-			background-color: rgba( 0, 0, 0, 0.7 );
+		#tellura {
+			border: 0px transparent solid;
 			margin: 0 auto;
 		}
 	</style>
+	<script type="text/javascript">
+		 window.onload = function() {
+			window.location.hash = '#tellura';
+		}
+	</script>
 	<link href="./favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
@@ -34,11 +39,8 @@
 	 <source src="./resources/music.ogg" type="audio/ogg" />
 	</audio>
 	<div class="container">
-		<div class="header">
-			<img src="headerTELLURA.jpg" />
-		</div>
 		<div class="gameContainer">
-			<iframe src="./metalparty.html" width="640" height="480" class="gameFrame" />
+			<iframe src="./metalparty.html" width="640" height="480" id="tellura" />
 		</div>
 	</div>
 </body>
