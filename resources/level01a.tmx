@@ -785,14 +785,14 @@
    <tile gid="0"/>
    <tile gid="139"/>
    <tile gid="0"/>
-   <tile gid="8"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="8"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="52"/>
    <tile gid="139"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -914,16 +914,16 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="8"/>
-   <tile gid="54"/>
+   <tile gid="0"/>
    <tile gid="8"/>
-   <tile gid="0"/>
-   <tile gid="52"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="139"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="137"/>
+   <tile gid="51"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1045,15 +1045,15 @@
    <tile gid="0"/>
    <tile gid="29"/>
    <tile gid="30"/>
-   <tile gid="8"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="137"/>
-   <tile gid="51"/>
-   <tile gid="137"/>
-   <tile gid="8"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5430,7 +5430,7 @@
     <property name="type" value="triggerPlayer"/>
    </properties>
   </object>
-  <object name="Switch04" x="2272" y="160" width="32" height="32">
+  <object name="Switch04" x="2272" y="192" width="32" height="32">
    <properties>
     <property name="actionOff" value="switch"/>
     <property name="actionOn" value="switch"/>
@@ -5469,20 +5469,20 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object name="Trap01" x="2496" y="128" width="32" height="32">
+  <object name="Trap01" x="2496" y="128" width="32" height="64">
    <properties>
     <property name="initial" value="closed"/>
-    <property name="name" value="trap01"/>
+    <property name="name" value="door26"/>
     <property name="orientation" value="horizontal"/>
-    <property name="type" value="trap"/>
+    <property name="type" value="door"/>
    </properties>
   </object>
-  <object name="Trap02" x="2496" y="192" width="32" height="32">
+  <object name="Trap02" x="2400" y="128" width="32" height="64">
    <properties>
     <property name="initial" value="opened"/>
-    <property name="name" value="trap02"/>
+    <property name="name" value="door25"/>
     <property name="orientation" value="horizontal"/>
-    <property name="type" value="trap"/>
+    <property name="type" value="door"/>
    </properties>
   </object>
  </objectgroup>
