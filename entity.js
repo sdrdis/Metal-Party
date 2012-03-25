@@ -3,9 +3,9 @@ goog.provide('m.Entity');
 m.Entity = function(layerName, position, colliderProperties) {
 	this.object = this.createObject();
 	layers[layerName].appendChild(this.object);
-	var x = position.x + this.object.getSize().width / 2;
-	var y = position.y + this.object.getSize().height / 2;
-	this.object.setPosition(x ,y );
+	var x = position.x + this.getWidth() / 2;
+	var y = position.y + this.getHeight() / 2;
+	this.object.setPosition(x, y);
 	
 	this.setColliderProperties(colliderProperties);
 	this.updateShapeDefs();
@@ -17,6 +17,22 @@ m.Entity = function(layerName, position, colliderProperties) {
 		shape = shape.GetNext();
 	}
 };
+
+m.Entity.prototype.getWidthInTile = function() {
+	return Math.ceil( this.object.getSize().width / tilesSize );
+}
+
+m.Entity.prototype.getWidth = function() {
+	return this.getWidthInTile() * tilesSize;
+}
+
+m.Entity.prototype.getHeightInTile = function() {
+	return Math.ceil( this.object.getSize().height / tilesSize );
+}
+
+m.Entity.prototype.getHeight = function() {
+	return this.getHeightInTile() * tilesSize;
+}
 
 m.Entity.prototype.createObject = function() {
 	return new lime.RoundedRect()
@@ -55,8 +71,6 @@ m.Entity.prototype.updateShapeDefs = function() {
 	if (this.colliderProperties['allowSleep'] !== undefined) {
 		bodyDef.allowSleep = this.colliderProperties['allowSleep'];
 	}
-	//console.log(shapeDefs);
-	//console.log(bodyDef);
 	this.body = world.CreateBody(bodyDef);
 };
 
@@ -80,21 +94,34 @@ m.Entity.prototype.convertCoordToPos = function(coordinate) {
 	return position
 }
 
-m.Entity.prototype.getCoord = function() {
-	var coordinate = {};
+m.Entity.prototype.getCoords = function() {
+	var coords = [];
+	var origin = {};
 	var position = this.object.getPosition();
-	coordinate.x = Math.floor( position.x / tilesSize );
-	coordinate.y = Math.floor( position.y / tilesSize );
-	return coordinate;
+	origin.x = Math.floor( position.x / tilesSize );
+	origin.y = Math.floor( position.y / tilesSize );
+	for ( var i=0; i<this.getWidthInTile(); i++ ) {
+		for ( var j=0; j<this.getHeightInTile(); j++ ) {
+			coords.push( {x: origin.x - i, y: origin.y - j} );
+		}
+	}
+	return coords;
 }
 
-m.Entity.prototype.inFrontOfCoord = function( coord ) {
-	var myCoord = this.getCoord();
-	return ( myCoord.x == coord.x && myCoord.y == coord.y );
+m.Entity.prototype.inFrontOfCoords = function( coords ) {
+	var myCoords = this.getCoords();
+	for ( var i=0; i<coords.length; i++ ) {
+		for ( var j=0; j<myCoords.length; j++ ) {
+			if ( myCoords[j].x == coords[i].x && myCoords[j].y == coords[i].y ) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 m.Entity.prototype.inFrontOfEntity = function( entity ) {
-	return this.inFrontOfCoord( entity.getCoord() );
+	return this.inFrontOfCoords( entity.getCoords() );
 }
 
 m.Entity.prototype.collideWithEntity = function( entity ) {

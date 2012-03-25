@@ -46,6 +46,14 @@ m.Player = function(coordinate) {
 };
 goog.inherits(m.Player, m.Entity);
 
+m.Player.prototype.getWidthInTile = function() {
+	return 1;
+}
+
+m.Player.prototype.getHeightInTile = function() {
+	return 2;
+}
+
 m.Player.prototype.createObject = function() {
 	var layer = new lime.Layer();
 	
