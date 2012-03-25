@@ -72,7 +72,12 @@ m.Entity.prototype.setColliderProperties = function(colliderProperties) {
 	if (colliderProperties['density'] > 0) {
 		references.push( this );
 	}
-	goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
+	
+	if (this.isAnchor || colliderProperties['density'] > 0) {
+		goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
+	}
+	
+	
 	this.colliderProperties = colliderProperties;
 }
 m.Entity.prototype.convertCoordToPos = function(coordinate) {
@@ -162,7 +167,7 @@ m.Entity.prototype.onMouseDown = function(e) {
 		vect.y = vect.y * dt;
 		
 		
-		if (this.body.density > 0) {
+		if (!this.isAnchor) {
 			this.body.ApplyForce(vect, this.body.GetOriginPosition());
 		} else {
 			vect = vect.Negative();
