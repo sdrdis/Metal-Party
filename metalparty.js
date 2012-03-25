@@ -35,6 +35,7 @@ goog.require('lime.animation.Spawn');
 goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
+goog.require('lime.audio.Audio');
 
 goog.require('lime.parser.TMX');
 
@@ -206,6 +207,7 @@ m.start = function() {
 	},this);
 	director.makeMobileWebAppCapable();
 	director.replaceScene(scene);
+
 }
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
