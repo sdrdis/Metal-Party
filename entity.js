@@ -34,7 +34,7 @@ m.Entity.prototype.createShapeDefs = function() {
 m.Entity.prototype.updateShapeDefs = function() {
 	if ( this.body ) {
 		// La pratique, pour Supprimer un body : 
-		this.body.SetOriginPosition( {x:500, y:500}, 0 );
+		this.body.SetOriginPosition( {x:-100, y:-100}, 0 );
 		this.body.m_userData = null;
 		// La Théorie :
 		world.DestroyBody( this.body );
