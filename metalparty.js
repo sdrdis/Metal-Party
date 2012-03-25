@@ -13,6 +13,7 @@ goog.require('m.Target');
 goog.require('m.DoorTarget');
 goog.require('m.TrapTarget');
 goog.require('m.DeathZone');
+goog.require('m.ManualAnimation');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -139,12 +140,14 @@ m.start = function() {
 
    	// Level
 
+
 	player = new m.Player(startPosition);
 	//new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
 	//new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 200});
 	//new m.Door({x:7, y: 11, tile : { properties : {} } });
 	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
+
 
 	
 
@@ -154,7 +157,7 @@ m.start = function() {
 		player.beforePhysics();
 		world.Step(dt / 1000, 3);
 		for (var i = 0; i < references.length; i++) {
-			references[i].update();
+			references[i].update(dt);
 		}
 	},this);
 	director.makeMobileWebAppCapable();

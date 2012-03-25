@@ -38,7 +38,6 @@ m.Entity.prototype.updateShapeDefs = function() {
 		this.body.m_userData = null;
 		// La Théorie :
 		world.DestroyBody( this.body );
-		console.log( 'destroy' );
 	}
 	var bodyDef = new box2d.BodyDef();
 	var position = this.object.getPosition();
@@ -105,13 +104,35 @@ m.Entity.prototype.collideWithEntity = function( entity ) {
 		( ( bb.left < myBb.right && bb.left > myBb.left ) || ( bb.right < myBb.right && bb.right > myBb.left ) ) &&
 		( ( bb.top < myBb.bottom && bb.top > myBb.top ) || ( bb.bottom < myBb.bottom && bb.bottom > myBb.top ) )
 	);
+};
+
+m.Entity.prototype.isInList = function(elementList) {
+	for ( var i=0; i<elementList.length; i++ ) {
+		if ( this == elementList ) return i;
+	}
+	return false;
 }
 
+m.Entity.prototype.getOverEntities = function(elementList, elementType) {
+	var myElements = [];
+	for ( var i=0; i<elementList.length; i++ ) {
+		var element = elementList[i];
+		if ( element instanceof elementType ) {
+			if ( element.inFrontOfEntity( this ) ) {
+				myElements.push(element);
+			}
+		}
+	}
+	return myElements;
+};
+
 m.Entity.prototype.update = function(dt) {
-	var pos = this.body.GetCenterPosition();
-	var rot = this.body.GetRotation();
-	this.object.setRotation(-rot / Math.PI * 180);
-	this.object.setPosition(pos);
+	if ( this.body ) {
+		var pos = this.body.GetCenterPosition();
+		var rot = this.body.GetRotation();
+		this.object.setRotation(-rot / Math.PI * 180);
+		this.object.setPosition(pos);
+	}
 };
 
 m.Entity.prototype.onMouseDown = function(e) {
