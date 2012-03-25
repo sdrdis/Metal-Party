@@ -15,35 +15,55 @@ m.Player = function(coordinate) {
 	this.rightPressed = false;
 	this.jump = false;
 	
+	this.t = 0;
+	this.animFrame = 0;
+	this.animDirection = 0;
+	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
+	goog.events.listen(this.object, ['mousemove'], this.onMouseMove, false, this);
 };
 goog.inherits(m.Player, m.Entity);
 
 m.Player.prototype.createObject = function() {
 	var layer = new lime.Layer();
 	
-	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(32,64);
-	bodySprite.runAction(new m.ManualAnimation([
-			{path: 'resources/player/body1.png', w: 32, h:64},
-			{path: 'resources/player/body2.png', w: 32, h:64}
-		]));
-	var leftHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(0,0);
-	var leftHandImage = new lime.fill.Image('resources/player/leftarm.png').setSize(32, 32);
-	leftHandSprite.setFill(leftHandImage);
-	var rightHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(0,3);
-	var rightHandImage = new lime.fill.Image('resources/player/rightarm.png').setSize(32, 32);
-	rightHandSprite.setFill(rightHandImage);
+	var bw = 28, bh = 53;
+	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(bw,bh);
+	var bodyAnim = new m.ManualAnimation([
+			{path: 'resources/player/body1.png', w: bw, h:bh},
+			{path: 'resources/player/body1flip.png', w: bw, h:bh},
+			{path: 'resources/player/body2.png', w: bw, h:bh},
+			{path: 'resources/player/body2flip.png', w: bw, h:bh}
+		]);
+	bodySprite.runAction(bodyAnim);
+	var backHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(0,5);
+	var backHandAnim = new m.ManualAnimation([
+			{path: 'resources/player/leftarm.png', w: 32, h:32},
+			{path: 'resources/player/rightarmflip.png', w: 32, h:32}
+		]);
+	backHandSprite.runAction(backHandAnim);
+	var frontHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(-2,7);
+	var frontHandAnim = new m.ManualAnimation([
+			{path: 'resources/player/rightarm.png', w: 32, h:32},
+			{path: 'resources/player/leftarmflip.png', w: 32, h:32}
+		]);
+	frontHandSprite.runAction(frontHandAnim);
 	
 	this.sprites = {
 		body: bodySprite,
-		leftHand: leftHandSprite,
-		rightHand: rightHandSprite
+		backHand: backHandSprite,
+		frontHand: frontHandSprite
+	};
+	this.anims = {
+		body: bodyAnim,
+		backHand: backHandAnim,
+		frontHand: frontHandAnim
 	};
 	
-	layer.appendChild(leftHandSprite);
+	layer.appendChild(backHandSprite);
 	layer.appendChild(bodySprite);
-	layer.appendChild(rightHandSprite);
+	layer.appendChild(frontHandSprite);
 	
 	return layer;
 };
@@ -162,3 +182,41 @@ m.Player.prototype.beforePhysics = function() {
 		}
 	}	
 }
+
+m.Player.prototype.update = function(dt) {
+	m.Player.superClass_.update.call(this, dt);
+	
+	this.t += dt;
+	
+	// Gather data
+	var isWalking = Math.abs(this.body.GetLinearVelocity().x) > 5;
+	var newAnimFrame;
+	if (isWalking) {
+		newAnimFrame = (this.t % 400 < 200) ? 0 : 2;
+	}
+	else {
+		newAnimFrame = 0;
+	}
+	var newAnimDirection;
+	if (isWalking) {
+		newAnimDirection = (this.body.GetLinearVelocity().x > 0) ? 0 : 1;
+	}
+	else {
+		newAnimDirection = this.animDirection;
+	}
+	
+	// Update sprites frames if needed
+	if (newAnimDirection != this.animDirection || newAnimFrame != this.animFrame) {
+		this.anims.body.setFrame(newAnimFrame + newAnimDirection);
+		this.anims.backHand.setFrame(newAnimDirection);
+		this.anims.frontHand.setFrame(newAnimDirection);
+		this.animFrame = newAnimFrame;
+		this.animDirection = newAnimDirection;
+	}
+	
+};
+
+m.Player.prototype.onMouseMove = function(e) {
+	// Update hands rotation
+	console.log(e.event);
+};

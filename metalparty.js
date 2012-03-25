@@ -141,7 +141,7 @@ m.start = function() {
 		player.beforePhysics();
 		world.Step(dt / 1000, 3);
 		for (var i = 0; i < references.length; i++) {
-			references[i].update();
+			references[i].update(dt);
 		}
 	},this);
 	director.makeMobileWebAppCapable();
