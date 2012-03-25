@@ -18,7 +18,7 @@ goog.inherits(m.BoxButton, m.Button);
 
 m.BoxButton.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
+	shapeDef.extents = new box2d.Vec2(tilesSize / 2, 1);
 	return [ shapeDef ];
 };
 
