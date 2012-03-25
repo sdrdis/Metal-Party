@@ -9,7 +9,7 @@ goog.require('m.Entity');
  * @constructor
  */
 m.Player = function(coordinate) {
-	m.Entity.call(this, 'objects', this.convertCoordToPos(coordinate), {density: 1, restitution: 1, preventRotation: true, allowSleep: false});
+	m.Entity.call(this, 'objects', this.convertCoordToPos(coordinate), {density: 1, preventRotation: true, allowSleep: false});
 
 	this.leftPressed = false;
 	this.rightPressed = false;
@@ -24,11 +24,23 @@ m.Player = function(coordinate) {
 	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
 
 	lime.scheduleManager.schedule(function(dt) {
+		// Handling
+		
 		var contactZone = this.body.GetContactList();
 		if (contactZone) {
 			if (contactZone.other.isDeathZone) {
 				this.moveTo(startPosition);
 			}
+		}
+		var sceneSize = scene.getSize();
+		
+		//console.log(this.body.GetCenterPosition().x - sceneSize.width / 2, worldSize.width * tilesSize + sceneSize.width / 2);
+
+		//console.log(worldSize.width * tilesSize - sceneSize.width / 2);
+		var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
+		var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
+		for ( var key in layers ) {
+			layers[ key ].setPosition(-x, -y);
 		}
 	},this);
 };
@@ -86,12 +98,12 @@ m.Player.prototype.moveTo = function(coordinate) {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef();
-	shapeDefB.extents.Set(0.45, 0.80);
-	shapeDefB.localPosition.Set(0, -0.20);
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
+	shapeDefB.localPosition.Set(0, -0.20 * tilesSize);
 	
 	var shapeDefC = new box2d.CircleDef();
-	shapeDefC.radius = 0.45;
-	shapeDefC.localPosition.Set(0, 0.55);
+	shapeDefC.radius = 0.45 * tilesSize;
+	shapeDefC.localPosition.Set(0, 0.35 * tilesSize);
 	
 	return [ shapeDefB, shapeDefC ];
 };
@@ -157,18 +169,18 @@ m.Player.prototype.onKeyUp = function(e) {
 
 m.Player.prototype.beforePhysics = function() {
 	var vel = this.body.GetLinearVelocity();
-	var max = 0.3;
+	var max = 300;
 	if (Math.abs(vel.x) > max) {
 		vel.x = (vel.x > 0) ? max : -max;
 		this.body.SetLinearVelocity(vel);
 	}
 	
 	if (this.leftPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(-0.5, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(-50000, 0), this.body.GetOriginPosition());
 	}
 	
 	if (this.rightPressed) {
-		this.body.ApplyImpulse(new box2d.Vec2(0.5, 0), this.body.GetOriginPosition());
+		this.body.ApplyImpulse(new box2d.Vec2(50000, 0), this.body.GetOriginPosition());
 	}
 	
 	var grounded = false;
@@ -192,9 +204,9 @@ m.Player.prototype.beforePhysics = function() {
 			vel.y = 0;
 			this.body.SetLinearVelocity(vel);
 			var pos = this.body.GetOriginPosition();
-			pos.y -= 0.01;
+			pos.y -= 1;
 			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -1.4), pos);
+			this.body.ApplyImpulse(new box2d.Vec2(0, -1400000), pos);
 		}
 	}
 }

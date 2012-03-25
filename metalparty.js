@@ -44,13 +44,20 @@ var tilesSize = 32;
 var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
-var startPosition = {x: 4, y: 4};
 
-/** @const */ pixelPerMeter = 100;
+var startPosition = {x: 4, y: 4};
+var scene;
+var worldSize = {width: 0, height: 0};
+
+//var startPosition = {x: 4, y: 4};
+
+/** @const */ pixelPerMeter = 1;
+
 
 // entrypoint
 m.start = function() {
 	function load_tmx(tmx) {
+		worldSize = {width: tmx.width, height: tmx.height};
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
@@ -158,14 +165,14 @@ m.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 20);
+	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(-1, -1);
-	bounds.maxVertex.Set(100, 100);
+	bounds.minVertex.Set(-10000, -10000);
+	bounds.maxVertex.Set(10000, 10000);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
-	var scene = new lime.Scene();
+	scene = new lime.Scene();
 	
 	// TMX
 	var tmx = new lime.parser.TMX('resources/test-area-test.tmx');

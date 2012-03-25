@@ -1,5 +1,7 @@
 goog.provide('m.Entity');
 
+var forces = [];
+
 m.Entity = function(layerName, position, colliderProperties) {
 	this.object = this.createObject();
 	layers[layerName].appendChild(this.object);
@@ -27,7 +29,7 @@ m.Entity.prototype.createObject = function() {
 
 m.Entity.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	shapeDef.extents.Set(0.5, 0.5);
+	shapeDef.extents.Set(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];
 };
 
@@ -41,27 +43,13 @@ m.Entity.prototype.updateShapeDefs = function() {
 	}
 	var bodyDef = new box2d.BodyDef();
 	var position = this.object.getPosition();
-	bodyDef.position.Set(position.x / pixelPerMeter, position.y / pixelPerMeter);
+	bodyDef.position.Set(position.x, position.y);
 	var shapeDefs = this.createShapeDefs();
 	for ( var i=0; i<shapeDefs.length; i++ ) {
-		var shape = shapeDefs[i];
-		
-		shape.localPosition.x *= tilesSize / pixelPerMeter;
-		shape.localPosition.y *= tilesSize / pixelPerMeter;
-		
-		if (shape.extents) {
-			shape.extents.x *= tilesSize / pixelPerMeter;
-			shape.extents.y *= tilesSize / pixelPerMeter;
-		}
-		
-		if (shape.radius) {
-			shape.radius *= tilesSize / pixelPerMeter;
-		}
-		
 		for (var key in this.colliderProperties) {
-			shape[key] = this.colliderProperties[key];
+			shapeDefs[i][key] = this.colliderProperties[key];
 		}
-		bodyDef.AddShape(shape);
+		bodyDef.AddShape(shapeDefs[i]);
 	}
 	if (this.colliderProperties['preventRotation'] !== undefined) {
 		bodyDef.preventRotation = this.colliderProperties['preventRotation'];
@@ -83,8 +71,8 @@ m.Entity.prototype.setColliderProperties = function(colliderProperties) {
 	}
 	if (colliderProperties['density'] > 0) {
 		references.push( this );
-		goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	}
+	goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	this.colliderProperties = colliderProperties;
 }
 m.Entity.prototype.convertCoordToPos = function(coordinate) {
@@ -145,7 +133,7 @@ m.Entity.prototype.update = function(dt) {
 		var pos = this.body.GetCenterPosition();
 		var rot = this.body.GetRotation();
 		this.object.setRotation(-rot / Math.PI * 180);
-		this.object.setPosition(new box2d.Vec2(pos.x * pixelPerMeter, pos.y * pixelPerMeter));
+		this.object.setPosition(pos);
 	}
 };
 
@@ -153,7 +141,7 @@ m.Entity.prototype.onMouseDown = function(e) {
 	if (this == player) { // I know it's risky...
 		return;
 	}
-	
+	forces.push(this);
 	var forceApplying = function(dt) {
 		var pos = this.object.getPosition();
 		var pos2 = player.object.getPosition();
@@ -173,12 +161,25 @@ m.Entity.prototype.onMouseDown = function(e) {
 		vect.x = vect.x * dt;
 		vect.y = vect.y * dt;
 		
-		this.body.ApplyForce(vect, this.body.GetOriginPosition());
+		
+		if (this.body.density > 0) {
+			this.body.ApplyForce(vect, this.body.GetOriginPosition());
+		} else {
+			vect = vect.Negative();
+			vect.x *= 4;
+			vect.y *= 4;
+			player.body.ApplyForce(vect, this.body.GetOriginPosition());
+		}
 	};
 	
 	
 	lime.scheduleManager.schedule(forceApplying,this);
 	var self = this;
-	document.onmouseup = function() { lime.scheduleManager.unschedule(forceApplying,self); }; //Didn't have any other idea....
+	document.onmouseup = function() {
+		for (var i = 0; i < forces.length; i++) {
+			lime.scheduleManager.unschedule(forceApplying,forces[i]);
+		}
+		forces = [];
+	}; //Didn't have any other idea....
 	
 };
