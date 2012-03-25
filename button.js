@@ -13,8 +13,6 @@ m.Button = function(coordinate) {
 	this.actionOn = properties.actionOn;
 	this.actionOff = properties.actionOff;
 	m.Entity.call(this, 'decorations', coordinate, {density: 0, restitution: 0});
-	var position = this.object.getPosition();
-	this.object.setPosition( position.x + tilesSize/2, position.y + tilesSize/2 );
 	buttons.push( this );
 	this.buttonId  = buttons.length;
 };
