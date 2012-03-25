@@ -45,6 +45,8 @@ var world;
 var player;
 var startPosition = {x: 4, y: 4};
 
+/** @const */ pixelPerMeter = 100;
+
 // entrypoint
 m.start = function() {
 	function load_tmx(tmx) {
@@ -156,10 +158,10 @@ m.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 1500);
+	var gravity = new box2d.Vec2(0, 20);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(0, 0);
-	bounds.maxVertex.Set(1700,1700);
+	bounds.minVertex.Set(-1, -1);
+	bounds.maxVertex.Set(100, 100);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
@@ -186,9 +188,6 @@ m.start = function() {
 	//new m.Platform({x: 100, y: 200});
 	//new m.Door({x:7, y: 11, tile : { properties : {} } });
 	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
-
-
-	
 
    	// Initialization
    	lime.scheduleManager.schedule(function(dt) {

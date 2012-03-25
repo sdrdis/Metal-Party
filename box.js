@@ -20,8 +20,8 @@ m.Box.prototype.createObject = function() {
 };
 
 m.Box.prototype.createShapeDefs = function() {
-	var shapeDef = new box2d.BoxDef;
-	shapeDef.extents = new box2d.Vec2(tilesSize / 2 * 0.8, tilesSize / 2 * 0.8);
+	var shapeDef = new box2d.BoxDef();
+	shapeDef.extents.Set(0.4, 0.4);
 	return [ shapeDef ];
 };
 
