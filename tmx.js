@@ -1,6 +1,3 @@
-//set main namespace
-//goog.provide('metalparty');
-
 //get requirements
 goog.require('lime.Director');
 goog.require('lime.Scene');
