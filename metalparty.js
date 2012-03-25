@@ -12,6 +12,7 @@ goog.require('m.Platform');
 goog.require('m.Target');
 goog.require('m.DoorTarget');
 goog.require('m.TrapTarget');
+goog.require('m.ManualAnimation');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
