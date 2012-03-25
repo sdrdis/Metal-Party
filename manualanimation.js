@@ -14,6 +14,7 @@ m.ManualAnimation = function(imageData) { // = array of {path, w, h}
 		this.addFrame(frame);
 	}
 	this.setFrame(0);
+	this.setLooping(false);
 };
 goog.inherits(m.ManualAnimation, lime.animation.KeyframeAnimation);
 

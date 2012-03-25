@@ -21,14 +21,31 @@ m.Player = function(coordinate) {
 goog.inherits(m.Player, m.Entity);
 
 m.Player.prototype.createObject = function() {
-	var sprite =  new lime.RoundedRect()
-		.setRadius(0)
-		.setSize(32,64);
-	sprite.runAction(new m.ManualAnimation([
+	var layer = new lime.Layer();
+	
+	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(32,64);
+	bodySprite.runAction(new m.ManualAnimation([
 			{path: 'resources/player/body1.png', w: 32, h:64},
 			{path: 'resources/player/body2.png', w: 32, h:64}
 		]));
-	return sprite;
+	var leftHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(0,0);
+	var leftHandImage = new lime.fill.Image('resources/player/leftarm.png').setSize(32, 32);
+	leftHandSprite.setFill(leftHandImage);
+	var rightHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(0,3);
+	var rightHandImage = new lime.fill.Image('resources/player/rightarm.png').setSize(32, 32);
+	rightHandSprite.setFill(rightHandImage);
+	
+	this.sprites = {
+		body: bodySprite,
+		leftHand: leftHandSprite,
+		rightHand: rightHandSprite
+	};
+	
+	layer.appendChild(leftHandSprite);
+	layer.appendChild(bodySprite);
+	layer.appendChild(rightHandSprite);
+	
+	return layer;
 };
 
 m.Player.prototype.createShapeDefs = function() {
