@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="blocks" tilewidth="32" tileheight="32">
+  <image source="blocks.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="17" name="area01_level_tiles" tilewidth="32" tileheight="32">
+  <image source="testarea_tileset/area01_level_tiles.png" width="640" height="241"/>
+ </tileset>
+ <layer name="foreground" width="20" height="15">
+  <data encoding="base64">
+   EwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEwAAABMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEwAAABMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE0AAAAAAAAAAAAAAE4AAAAAAAAAEwAAABMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATgAAAAAAAAATAAAAEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEwAAABMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEwAAABMAAAAAAAAAJwAAACcAAAAAAAAAAAAAAAAAAAATAAAAEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAEwAAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE4AAAAAAAAAAAAAABMAAAATAAAAOQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAAAAAAA6AAAAAAAAAAAAAAAAAAAATgAAAAAAAAAAAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAAEwAAABMAAAATAAAA
+  </data>
+ </layer>
+ <objectgroup name="Calque d'objets 1" width="20" height="15">
+  <object name="Platform01" x="64" y="352" width="64" height="32">
+   <properties>
+    <property name="name" value="platform1"/>
+    <property name="type" value="vertical"/>
+    <property name="x1" value=""/>
+    <property name="x2" value=""/>
+    <property name="y1" value="3"/>
+    <property name="y2" value="11"/>
+   </properties>
+  </object>
+  <object name="Switch01" x="384" y="416" width="32" height="32">
+   <properties>
+    <property name="actionOff" value="switch"/>
+    <property name="actionOn" value="switch"/>
+    <property name="name" value="switch1"/>
+    <property name="targetName" value="door1"/>
+    <property name="type" value="triggerWorld"/>
+   </properties>
+  </object>
+  <object name="Door01" x="512" y="384" width="32" height="64">
+   <properties>
+    <property name="initial" value="closed"/>
+    <property name="name" value="door1"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object name="Switch02" x="448" y="224" width="32" height="32">
+   <properties>
+    <property name="actionOff" value="switch"/>
+    <property name="actionOn" value="switch"/>
+    <property name="name" value="switch2"/>
+    <property name="targetName" value="door2"/>
+    <property name="type" value="triggerPlayer"/>
+   </properties>
+  </object>
+  <object name="Door02" x="544" y="224" width="32" height="64">
+   <properties>
+    <property name="initial" value="closed"/>
+    <property name="name" value="door2"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
