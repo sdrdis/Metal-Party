@@ -14,9 +14,14 @@ m.ManualAnimation = function(imageData) { // = array of {path, w, h}
 		this.addFrame(frame);
 	}
 	this.setFrame(0);
+	this.setLooping(false);
 };
 goog.inherits(m.ManualAnimation, lime.animation.KeyframeAnimation);
 
 m.ManualAnimation.prototype.setFrame = function(id) {
 		this.currentFrame_ = id;
+		var i = this.targets.length;
+		while (--i >= 0) {
+			this.targets[0].setFill(this.frames_[id]);
+		}
 };
