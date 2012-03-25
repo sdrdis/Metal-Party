@@ -35,6 +35,7 @@ goog.require('lime.animation.Spawn');
 goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
+goog.require('lime.audio.Audio');
 
 goog.require('lime.parser.TMX');
 
@@ -48,7 +49,6 @@ var startPosition = {x: 4, y: 4};
 // entrypoint
 m.start = function() {
 	function load_tmx(tmx) {
-        console.log(tmx);
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
@@ -198,6 +198,7 @@ m.start = function() {
 	},this);
 	director.makeMobileWebAppCapable();
 	director.replaceScene(scene);
+
 }
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
