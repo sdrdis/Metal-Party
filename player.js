@@ -28,11 +28,11 @@ m.Player.prototype.createObject = function() {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef;
-	shapeDefB.extents.Set(tilesSize / 2, tilesSize * 0.80);
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
 	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
 	
 	var shapeDefC = new box2d.CircleDef;
-	shapeDefC.radius = tilesSize * 0.55;
+	shapeDefC.radius = tilesSize * 0.45;
 	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
 	
 	return [ shapeDefB, shapeDefC ];
@@ -77,7 +77,7 @@ m.Player.prototype.getButtons = function() {
 	for ( var i=0; i<buttons.length; i++ ) {
 		var button = buttons[i];
 		if ( button instanceof m.PlayerButton ) {
-			if ( button.collideWithEntity( this ) ) {
+			if ( button.inFrontOfEntity( this ) ) {
 				myButtons.push(button);
 			}
 		}
