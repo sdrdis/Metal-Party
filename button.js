@@ -6,13 +6,13 @@ goog.require('m.Entity');
  * A button
  * @constructor
  */
-m.Button = function(coordinate) {
-	var properties = coordinate.tile.properties;
+m.Button = function(tileInfos) {
+	var properties = tileInfos.tile.properties;
 	this.active = false;
 	this.targetName = properties.targetName;
 	this.actionOn = properties.actionOn;
 	this.actionOff = properties.actionOff;
-	m.Entity.call(this, 'decorations', coordinate, {density: 0, restitution: 0});
+	m.Entity.call(this, 'decorations', {x: tileInfos.px, y: tileInfos.py}, {density: 0, restitution: 0});
 	buttons.push( this );
 	this.buttonId  = buttons.length;
 };

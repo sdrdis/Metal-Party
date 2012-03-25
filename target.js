@@ -6,14 +6,14 @@ goog.require('m.Entity');
  * A door
  * @constructor
  */
-m.Target = function(coordinate) {
-	var properties = coordinate.tile.properties;
+m.Target = function(tileInfos) {
+	var properties = tileInfos.tile.properties;
 	this.opened = properties.initial == 'opened' ? true : false;
 	this['name'] = properties['name'];
 	for ( key in this.frames ) {
 		this.frames[key].setSize(this.width, this.height).setOffset(0, 0);
 	}
-	m.Entity.call(this, 'decorations', coordinate, {density: 0, restitution: 0});
+	m.Entity.call(this, 'decorations', {x: tileInfos.px, y: tileInfos.py}, {density: 0, restitution: 0});
 	targets[this['name']] = this;
 };
 goog.inherits(m.Target, m.Entity);
