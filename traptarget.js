@@ -1,5 +1,7 @@
 goog.provide('m.TrapTarget');
 
+goog.require('m.Target');
+
 /**
  * A Trap
  * @constructor

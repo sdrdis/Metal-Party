@@ -1,5 +1,7 @@
 goog.provide('m.Platform');
 
+goog.require('m.Entity');
+
 m.Platform = function(coordinate) {
 	m.Entity.call(this, 'objects', coordinate, {density: 30, restitution: 0.2});
 	

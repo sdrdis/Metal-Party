@@ -1,5 +1,7 @@
 goog.provide('m.Box');
 
+goog.require('m.Entity');
+
 /**
  * A box
  * @constructor

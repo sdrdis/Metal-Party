@@ -1,5 +1,7 @@
 goog.provide('m.Wall');
 
+goog.require('m.Entity');
+
 /**
  * A wall
  * @constructor
