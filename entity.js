@@ -1,5 +1,7 @@
 goog.provide('m.Entity');
 
+var forces = [];
+
 m.Entity = function(layerName, position, colliderProperties) {
 	this.object = this.createObject();
 	layers[layerName].appendChild(this.object);
@@ -69,8 +71,8 @@ m.Entity.prototype.setColliderProperties = function(colliderProperties) {
 	}
 	if (colliderProperties['density'] > 0) {
 		references.push( this );
-		goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	}
+	goog.events.listen(this.object, ['mousedown'], this.onMouseDown, false, this);
 	this.colliderProperties = colliderProperties;
 }
 m.Entity.prototype.convertCoordToPos = function(coordinate) {
@@ -139,7 +141,7 @@ m.Entity.prototype.onMouseDown = function(e) {
 	if (this == player) { // I know it's risky...
 		return;
 	}
-	
+	forces.push(this);
 	var forceApplying = function(dt) {
 		var pos = this.object.getPosition();
 		var pos2 = player.object.getPosition();
@@ -159,12 +161,25 @@ m.Entity.prototype.onMouseDown = function(e) {
 		vect.x = vect.x * dt;
 		vect.y = vect.y * dt;
 		
-		this.body.ApplyForce(vect, this.body.GetOriginPosition());
+		
+		if (this.body.density > 0) {
+			this.body.ApplyForce(vect, this.body.GetOriginPosition());
+		} else {
+			vect = vect.Negative();
+			vect.x *= 4;
+			vect.y *= 4;
+			player.body.ApplyForce(vect, this.body.GetOriginPosition());
+		}
 	};
 	
 	
 	lime.scheduleManager.schedule(forceApplying,this);
 	var self = this;
-	document.onmouseup = function() { lime.scheduleManager.unschedule(forceApplying,self); }; //Didn't have any other idea....
+	document.onmouseup = function() {
+		for (var i = 0; i < forces.length; i++) {
+			lime.scheduleManager.unschedule(forceApplying,forces[i]);
+		}
+		forces = [];
+	}; //Didn't have any other idea....
 	
 };
