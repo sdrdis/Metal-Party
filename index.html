@@ -5,10 +5,10 @@
 	<link rel="stylesheet" type="text/css" href="./normalize.css" />
 	<style type="text/css">
 		html, body{
-			min-height: 100%;
+			height: 100%;
 		}
-		html {
-			padding: 10px;
+		body {
+			padding: 10px 10px 50px;
 			background: url('./Header.jpg') no-repeat #232323;
 			background-size: 500px; 
 		}
@@ -19,8 +19,6 @@
 		.gameContainer {
 			padding: 79px 106px;
 			background: url('./cadre.jpg') no-repeat;
-			position: relative;
-			z-index: 1;
 		}
 		#tellura {
 			border: 0px transparent solid;
@@ -28,13 +26,17 @@
 		}
 		.github {
 			position: absolute;
-			left: 0px;
-			top: 0px;
+			left: 0;
+			top: 0;
+			z-index: 1;
+			text-decoration: none;
 		}
 		.gdp {
 			position: absolute;
-			right: 20px;
-			top: 20px;
+			left: 5px;
+			bottom: 0;
+			z-index: 1;
+			text-decoration: none;
 		}
 		.github img, .gdp img {
 			border: 0;
