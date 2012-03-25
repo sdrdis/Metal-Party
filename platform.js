@@ -35,8 +35,6 @@ m.Platform.prototype.createObject = function() {
 
 m.Platform.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	//shapeDef.extents = new box2d.Vec2(25, 8);
-	
-	shapeDef.extents = new box2d.Vec2(0.5, 0.5);
+	shapeDef.extents = new box2d.Vec2(25, 8);
 	return [ shapeDef ];
 };

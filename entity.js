@@ -27,7 +27,7 @@ m.Entity.prototype.createObject = function() {
 
 m.Entity.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
-	shapeDef.extents.Set(0.5, 0.5);
+	shapeDef.extents.Set(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];
 };
 
@@ -41,27 +41,13 @@ m.Entity.prototype.updateShapeDefs = function() {
 	}
 	var bodyDef = new box2d.BodyDef();
 	var position = this.object.getPosition();
-	bodyDef.position.Set(position.x / pixelPerMeter, position.y / pixelPerMeter);
+	bodyDef.position.Set(position.x, position.y);
 	var shapeDefs = this.createShapeDefs();
 	for ( var i=0; i<shapeDefs.length; i++ ) {
-		var shape = shapeDefs[i];
-		
-		shape.localPosition.x *= tilesSize / pixelPerMeter;
-		shape.localPosition.y *= tilesSize / pixelPerMeter;
-		
-		if (shape.extents) {
-			shape.extents.x *= tilesSize / pixelPerMeter;
-			shape.extents.y *= tilesSize / pixelPerMeter;
-		}
-		
-		if (shape.radius) {
-			shape.radius *= tilesSize / pixelPerMeter;
-		}
-		
 		for (var key in this.colliderProperties) {
-			shape[key] = this.colliderProperties[key];
+			shapeDefs[i][key] = this.colliderProperties[key];
 		}
-		bodyDef.AddShape(shape);
+		bodyDef.AddShape(shapeDefs[i]);
 	}
 	if (this.colliderProperties['preventRotation'] !== undefined) {
 		bodyDef.preventRotation = this.colliderProperties['preventRotation'];
@@ -145,7 +131,7 @@ m.Entity.prototype.update = function(dt) {
 		var pos = this.body.GetCenterPosition();
 		var rot = this.body.GetRotation();
 		this.object.setRotation(-rot / Math.PI * 180);
-		this.object.setPosition(new box2d.Vec2(pos.x/* * pixelPerMeter*/, pos.y/* * pixelPerMeter*/));
+		this.object.setPosition(pos);
 	}
 };
 

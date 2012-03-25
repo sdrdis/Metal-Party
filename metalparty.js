@@ -45,7 +45,7 @@ var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 
-var startPosition = {x: 4, y: 39};
+var startPosition = {x: 4, y: 4};
 var scene;
 var worldSize = {width: 0, height: 0};
 
@@ -165,17 +165,17 @@ m.start = function() {
 	}
 	
 	// World
-	var gravity = new box2d.Vec2(0, 20);
+	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(-1, -1);
-	bounds.maxVertex.Set(100, 100);
+	bounds.minVertex.Set(-10000, -10000);
+	bounds.maxVertex.Set(10000, 10000);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
 	scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
+	var tmx = new lime.parser.TMX('resources/test-area-test.tmx');
 	layers = {
 		background: new lime.Layer().setPosition(0,0),
 		walls: new lime.Layer().setPosition(0,0),
