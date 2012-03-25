@@ -5,7 +5,11 @@ goog.provide('m.Button');
  * @constructor
  */
 m.Button = function(coordinate) {
+	var properties = coordinate.tile.properties;
 	this.active = false;
+	this.targetName = properties.targetName;
+	this.actionOn = properties.actionOn;
+	this.actionOff = properties.actionOff;
 	m.Entity.call(this, 'decorations', this.convertCoordToPos(coordinate), {density: 0, restitution: 0});
 	buttons.push( this );
 };
@@ -23,11 +27,19 @@ m.Button.prototype.createShapeDefs = function() {
 
 m.Button.prototype.activate = function() {
 	this.active = true;
-	//TODO: actionOn
+	if ( targets[ this.targetName ] ) { 
+		targets[ this.targetName ].action( this.actionOn );
+	} else {
+		console.log( 'Le métal c\'est pas bon' );
+	}
 };
 m.Button.prototype.desactivate = function() {
 	this.active = false;
-	//TODO: actionOff
+	if ( targets[ this.targetName ] ) { 
+		targets[ this.targetName ].action( this.actionOff );
+	} else {
+		console.log( 'Le métal c\'est pas bon' );
+	}
 };
 m.Button.prototype.trigger = function() {
 	if (this.active) {
