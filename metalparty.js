@@ -45,6 +45,7 @@ var player;
 metalparty.start = function() {
 
 	function load_tmx(tmx) {
+		console.log(tmx);
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
@@ -72,7 +73,9 @@ metalparty.start = function() {
                         default:
                             type = 'Wall';
                     }
-					new m[type](tileInfos);
+                    if (tileInfos.tile.properties.type != 'ignore') {
+                    	new m[type](tileInfos);
+                    }
 				});
 			}
 		}
@@ -112,24 +115,24 @@ metalparty.start = function() {
 	var scene = new lime.Scene();
 	
 	// TMX
-	var tmx = new lime.parser.TMX('resources/area02.tmx');
+	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
 	layers = {
-		background: new lime.Layer().setPosition(0,0),
-		walls: new lime.Layer().setPosition(0,0),
-		decorations: new lime.Layer().setPosition(0, 0),
-		objects: new lime.Layer().setPosition(0,0),
-		foreground: new lime.Layer().setPosition(0,0)
+		background: new lime.Layer().setPosition(0,-900),
+		walls: new lime.Layer().setPosition(0,-900),
+		decorations: new lime.Layer().setPosition(0, -900),
+		objects: new lime.Layer().setPosition(0,-900),
+		foreground: new lime.Layer().setPosition(0,-900)
 	};
 	load_tmx(tmx);
 	
 
    	// Level
-	player = new m.Player({x: 5, y: 2});
-	new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
+	player = new m.Player({x: 4, y: 39});
+	//new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
 	//new m.PlayerButton({x:5, y: 12});
-	new m.Platform({x: 100, y: 200});
-	new m.Door({x:7, y: 11, tile : { properties : {} } });
-	new m.Trap({x:9, y: 12, tile : { properties : {} } });
+	//new m.Platform({x: 100, y: 200});
+	//new m.Door({x:7, y: 11, tile : { properties : {} } });
+	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
 	
 
    	// Initialization
