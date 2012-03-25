@@ -1,5 +1,7 @@
 goog.provide('m.Target');
 
+goog.require('m.Entity');
+
 /**
  * A door
  * @constructor

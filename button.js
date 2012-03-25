@@ -1,5 +1,7 @@
 goog.provide('m.Button');
 
+goog.require('m.Entity');
+
 /**
  * A button
  * @constructor

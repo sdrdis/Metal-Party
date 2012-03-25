@@ -2,6 +2,7 @@ goog.provide('m.Player');
 
 goog.require('goog.events.KeyCodes');
 goog.require('box2d.Vec2');
+goog.require('m.Entity');
 
 /**
  * The player
