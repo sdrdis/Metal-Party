@@ -44,10 +44,13 @@ var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
 var startPosition = {x: 4, y: 39};
+var scene;
+var worldSize = {width: 0, height: 0};
 
 // entrypoint
 m.start = function() {
 	function load_tmx(tmx) {
+		worldSize = {width: tmx.width, height: tmx.height};
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
@@ -124,7 +127,7 @@ m.start = function() {
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
-	var scene = new lime.Scene();
+	scene = new lime.Scene();
 	
 	// TMX
 	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
