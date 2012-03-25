@@ -2,6 +2,7 @@ goog.provide('m.Player');
 
 goog.require('goog.events.KeyCodes');
 goog.require('box2d.Vec2');
+goog.require('m.Entity');
 
 /**
  * The player
@@ -16,6 +17,16 @@ m.Player = function(coordinate) {
 	
 	goog.events.listen(this.object, ['keydown'], this.onKeyDown, false, this);
 	goog.events.listen(this.object, ['keyup'], this.onKeyUp, false, this);
+	
+	lime.scheduleManager.schedule(function(dt) {
+		var contactZone = this.body.GetContactList();
+		if (contactZone) {
+			if (contactZone.other.isDeathZone) {
+				this.moveTo(startPosition);
+			}
+		}
+		//console.log(this.GetContactList());
+	},this);
 };
 goog.inherits(m.Player, m.Entity);
 
@@ -26,13 +37,17 @@ m.Player.prototype.createObject = function() {
 	.setFill(255,0,0);
 };
 
+m.Player.prototype.moveTo(position) {
+	
+}
+
 m.Player.prototype.createShapeDefs = function() {
-	var shapeDefB = new box2d.BoxDef;
-	shapeDefB.extents.Set(tilesSize / 2, tilesSize * 0.80);
+	var shapeDefB = new box2d.BoxDef();
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
 	shapeDefB.localPosition.Set(0, tilesSize * (-0.20));
 	
-	var shapeDefC = new box2d.CircleDef;
-	shapeDefC.radius = tilesSize * 0.55;
+	var shapeDefC = new box2d.CircleDef();
+	shapeDefC.radius = tilesSize * 0.45;
 	shapeDefC.localPosition.Set(0, tilesSize * (0.45));
 	
 	return [ shapeDefB, shapeDefC ];
@@ -77,7 +92,7 @@ m.Player.prototype.getButtons = function() {
 	for ( var i=0; i<buttons.length; i++ ) {
 		var button = buttons[i];
 		if ( button instanceof m.PlayerButton ) {
-			if ( button.collideWithEntity( this ) ) {
+			if ( button.inFrontOfEntity( this ) ) {
 				myButtons.push(button);
 			}
 		}

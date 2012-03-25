@@ -1,4 +1,4 @@
-goog.provide('m.Wall');
+goog.provide('m.DeathZone');
 
 goog.require('m.Entity');
 
@@ -6,15 +6,17 @@ goog.require('m.Entity');
  * A wall
  * @constructor
  */
-m.Wall = function(tileInfos) {
+m.DeathZone = function(tileInfos) {
 	if (tileInfos.tile.frame) {
 		this.image = tileInfos.tile.frame;
 	}
-	m.Entity.call(this, 'walls', {x: tileInfos.px, y: tileInfos.py}, {density: 0});
+	//this.body.isDeathZone = true;
+	m.Entity.call(this, 'objects', {x: tileInfos.px, y: tileInfos.py}, {density: 0});
+	this.body.isDeathZone = true;
 };
-goog.inherits(m.Wall, m.Entity);
+goog.inherits(m.DeathZone, m.Entity);
 
-m.Wall.prototype.createObject = function() {
+m.DeathZone.prototype.createObject = function() {
 	if (this.image) {
         return new lime.Sprite()
         .setSize(tilesSize,tilesSize)
@@ -24,7 +26,7 @@ m.Wall.prototype.createObject = function() {
 	}
 };
 
-m.Wall.prototype.createShapeDefs = function() {
+m.DeathZone.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef();
 	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
 	return [ shapeDef ];

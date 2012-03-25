@@ -1,5 +1,7 @@
 goog.provide('m.BoxButton');
 
+goog.require('m.Button');
+
 /**
  * A box button
  * @constructor

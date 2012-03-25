@@ -1,5 +1,7 @@
 goog.provide('m.PlayerButton');
 
+goog.require('m.Button');
+
 /**
  * A player button
  * @constructor

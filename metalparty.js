@@ -1,5 +1,5 @@
 //set main namespace
-goog.provide('metalparty');
+goog.provide('m');
 
 goog.require('m.Entity');
 goog.require('m.Player');
@@ -9,8 +9,10 @@ goog.require('m.Button');
 goog.require('m.PlayerButton');
 goog.require('m.BoxButton');
 goog.require('m.Platform');
-goog.require('m.Door');
-goog.require('m.Trap');
+goog.require('m.Target');
+goog.require('m.DoorTarget');
+goog.require('m.TrapTarget');
+goog.require('m.DeathZone');
 
 goog.require('box2d.BodyDef');
 goog.require('box2d.BoxDef');
@@ -37,38 +39,46 @@ goog.require('lime.parser.TMX');
 
 // Globals
 var tilesSize = 32;
-var layers, references = [], buttons = [], targets = {};
+var layers, references = [], buttons = [], targets = {}, bodiesToRemove = [];
 var world;
 var player;
+var startPosition = {x: 4, y: 39};
 
 // entrypoint
-metalparty.start = function() {
-
+m.start = function() {
 	function load_tmx(tmx) {
-		console.log(tmx);
 		for ( var i=0; i<tmx.layers.length; i++ ) {
 			if ( layers[ tmx.layers[i].name ] ) {
 				layer = layers[ tmx.layers[i].name ];
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
+				
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
-					tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-                    var type;
-                    switch (tileInfos.tile.properties.type) {
-                        case 'triggerWorld' :
-                            type = 'BoxButton';
-                            break;
+					if (tileInfos.tile.properties instanceof Array) {
+						tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+					}
+					
+					var type;
+					switch (tileInfos.tile.properties.type) {
+					
+						case 'triggerWorld' :
+							type = 'BoxButton';
+							break;
 
-                        case 'triggerPlayer':
-                            type = 'PlayerButton';
-                            break;
+						case 'triggerPlayer':
+							type = 'PlayerButton';
+							break;
 
-                        case 'door':
-                            type = 'Door';
-                            break;
+						case 'door':
+							type = 'DoorTarget';
+							break;
 
-                        case 'trap':
-                            type = 'Trap';
-                            break;
+						case 'trap':
+							type = 'TrapTarget';
+							break;
+							
+						case 'mortal':
+							type = 'DeathZone';
+							break;
 
                         default:
                             type = 'Wall';
@@ -85,6 +95,7 @@ metalparty.start = function() {
 	}
 	
 	function tmx_tile_parse_property(tile) {
+		
 		var values = {};
 		if (tile.properties.length > 0) {
 			tile.properties.forEach(function(prop) {
@@ -107,8 +118,8 @@ metalparty.start = function() {
 	// World
 	var gravity = new box2d.Vec2(0, 1500);
 	var bounds = new box2d.AABB();
-	bounds.minVertex.Set(-1000, -1000);
-	bounds.maxVertex.Set(1000,1000);
+	bounds.minVertex.Set(0, 0);
+	bounds.maxVertex.Set(1700,1700);
 	world = new box2d.World(bounds, gravity, false);
 	
 	var director = new lime.Director(document.body,640,480);
@@ -117,22 +128,24 @@ metalparty.start = function() {
 	// TMX
 	var tmx = new lime.parser.TMX('resources/test-area01.tmx');
 	layers = {
-		background: new lime.Layer().setPosition(0,-900),
-		walls: new lime.Layer().setPosition(0,-900),
-		decorations: new lime.Layer().setPosition(0, -900),
-		objects: new lime.Layer().setPosition(0,-900),
-		foreground: new lime.Layer().setPosition(0,-900)
+		background: new lime.Layer().setPosition(0,-1000),
+		walls: new lime.Layer().setPosition(0,-1000),
+		decorations: new lime.Layer().setPosition(0, -1000),
+		objects: new lime.Layer().setPosition(0,-1000),
+		foreground: new lime.Layer().setPosition(0,-1000)
 	};
 	load_tmx(tmx);
 	
 
    	// Level
-	player = new m.Player({x: 4, y: 39});
+
+	player = new m.Player(startPosition);
 	//new m.Box({x: 17 * tilesSize, y: 2 * tilesSize});
 	//new m.PlayerButton({x:5, y: 12});
 	//new m.Platform({x: 100, y: 200});
 	//new m.Door({x:7, y: 11, tile : { properties : {} } });
 	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
+
 	
 
    	// Initialization
@@ -149,4 +162,4 @@ metalparty.start = function() {
 }
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
-goog.exportSymbol('metalparty.start', metalparty.start);
+goog.exportSymbol('m.start', m.start);

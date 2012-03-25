@@ -1,5 +1,7 @@
 goog.provide('m.Platform');
 
+goog.require('m.Entity');
+
 m.Platform = function(coordinate) {
 	m.Entity.call(this, 'objects', coordinate, {density: 30, restitution: 0.2});
 	
@@ -31,7 +33,7 @@ m.Platform.prototype.createObject = function() {
 };
 
 m.Platform.prototype.createShapeDefs = function() {
-	var shapeDef = new box2d.BoxDef;
+	var shapeDef = new box2d.BoxDef();
 	shapeDef.extents = new box2d.Vec2(25, 8);
 	
 	return [ shapeDef ];
