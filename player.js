@@ -98,12 +98,12 @@ m.Player.prototype.moveTo = function(coordinate) {
 
 m.Player.prototype.createShapeDefs = function() {
 	var shapeDefB = new box2d.BoxDef();
-	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.80);
-	shapeDefB.localPosition.Set(0, -0.20 * tilesSize);
+	shapeDefB.extents.Set(tilesSize * 0.45, tilesSize * 0.6);
+	shapeDefB.localPosition.Set(0, -0.4 * tilesSize);
 	
 	var shapeDefC = new box2d.CircleDef();
 	shapeDefC.radius = 0.45 * tilesSize;
-	shapeDefC.localPosition.Set(0, 0.35 * tilesSize);
+	shapeDefC.localPosition.Set(0, 0.20 * tilesSize);
 	
 	return [ shapeDefB, shapeDefC ];
 };
@@ -159,6 +159,7 @@ m.Player.prototype.onKeyUp = function(e) {
 			
 		case codes.UP:
 			this.jump = false;
+			delete this.jumpingTime;
 			break;
 			
 		default:
@@ -186,9 +187,20 @@ m.Player.prototype.beforePhysics = function() {
 	var grounded = false;
 	var contact = this.body.GetContactList();
 	while (contact) {
-		if (contact.contact.m_shape1 == this.shapes[0] || contact.contact.m_shape2 == this.shapes[0]) {
-			grounded = true;
-			break;
+		if (contact.contact.m_shape1 == this.shapes[0]) {
+			var angle = Math.atan2(contact.contact.m_shape1.m_position.y - contact.contact.m_shape2.m_position.y, contact.contact.m_shape1.m_position.x - contact.contact.m_shape2.m_position.x);
+			if (Math.abs(- Math.PI / 2 - angle) < 0.5) {
+				grounded = true;
+				break;
+			}
+		}
+		if (contact.contact.m_shape2 == this.shapes[0]) {
+			var angle = Math.atan2(contact.contact.m_shape1.m_position.y - contact.contact.m_shape2.m_position.y, contact.contact.m_shape1.m_position.x - contact.contact.m_shape2.m_position.x);
+			console.log(angle);
+			if (Math.abs(Math.PI / 2 - angle) < 0.5) {
+				grounded = true;
+				break;
+			}
 		}
 		contact = contact.next;
 	}
@@ -198,16 +210,16 @@ m.Player.prototype.beforePhysics = function() {
 		this.body.SetLinearVelocity(vel);
 	}
 	
-	if (this.jump) {
-		//this.jump = false;
-		if (grounded) {
-			vel.y = 0;
-			this.body.SetLinearVelocity(vel);
-			var pos = this.body.GetOriginPosition();
-			pos.y -= 1;
-			this.body.SetOriginPosition(pos, 0);
-			this.body.ApplyImpulse(new box2d.Vec2(0, -1400000), pos);
-		}
+	if (this.jump && grounded) {
+		this.jumpingTime = this.t + 200;
+		var pos = this.body.GetOriginPosition();
+		pos.y -= 1;
+		this.body.SetOriginPosition(pos, 0);
+	}
+	
+	if (this.jumpingTime !== undefined) {
+		vel.y = -300;
+		this.body.SetLinearVelocity(vel);
 	}
 }
 
@@ -242,6 +254,9 @@ m.Player.prototype.update = function(dt) {
 		this.animDirection = newAnimDirection;
 	}
 	
+	if (this.jumpingTime && this.t > this.jumpingTime) {
+		delete this.jumpingTime;
+	}
 };
 
 m.Player.prototype.onMouseMove = function(e) {
