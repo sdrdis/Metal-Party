@@ -150,9 +150,6 @@ m.start = function() {
 	//new m.Door({x:7, y: 11, tile : { properties : {} } });
 	//new m.Trap({x:9, y: 12, tile : { properties : {} } });
 
-
-*/
-
    	// Initialization
    	lime.scheduleManager.schedule(function(dt) {
 		if(dt>100) dt=100; // long delays(after pause) cause false collisions
