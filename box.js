@@ -15,13 +15,13 @@ goog.inherits(m.Box, m.Entity);
 m.Box.prototype.createObject = function() {
 	return new lime.RoundedRect()
 	.setRadius(4)
-	.setSize(31,31)
+	.setSize(30,30)
 	.setFill(0,255,0);
 };
 
 m.Box.prototype.createShapeDefs = function() {
 	var shapeDef = new box2d.BoxDef;
-	shapeDef.extents = new box2d.Vec2(tilesSize / 2, tilesSize / 2);
+	shapeDef.extents = new box2d.Vec2(tilesSize / 2 * 0.8, tilesSize / 2 * 0.8);
 	return [ shapeDef ];
 };
 
