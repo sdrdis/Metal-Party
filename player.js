@@ -24,11 +24,23 @@ m.Player = function(coordinate) {
 	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
 
 	lime.scheduleManager.schedule(function(dt) {
+		// Handling
+		
 		var contactZone = this.body.GetContactList();
 		if (contactZone) {
 			if (contactZone.other.isDeathZone) {
 				this.moveTo(startPosition);
 			}
+		}
+		var sceneSize = scene.getSize();
+		
+		//console.log(this.body.GetCenterPosition().x - sceneSize.width / 2, worldSize.width * tilesSize + sceneSize.width / 2);
+
+		//console.log(worldSize.width * tilesSize - sceneSize.width / 2);
+		var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
+		var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
+		for ( var key in layers ) {
+			layers[ key ].setPosition(-x, -y);
 		}
 	},this);
 };
