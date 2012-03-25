@@ -50,7 +50,7 @@ m.Player.prototype.createObject = function() {
 	var layer = new lime.Layer();
 	
 	var bw = 28, bh = 53;
-	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(bw,bh);
+	var bodySprite = new lime.RoundedRect().setRadius(0).setSize(bw,bh).setPosition(0,0);
 	var bodyAnim = new m.ManualAnimation([
 			{path: 'resources/player/body1.png', w: bw, h:bh},
 			{path: 'resources/player/body1flip.png', w: bw, h:bh},
@@ -64,7 +64,7 @@ m.Player.prototype.createObject = function() {
 			{path: 'resources/player/rightarmflip.png', w: 32, h:32}
 		]);
 	backHandSprite.runAction(backHandAnim);
-	var frontHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(-2,7);
+	var frontHandSprite = new lime.RoundedRect().setRadius(0).setSize(32,32).setPosition(-4,7);
 	var frontHandAnim = new m.ManualAnimation([
 			{path: 'resources/player/rightarm.png', w: 32, h:32},
 			{path: 'resources/player/leftarmflip.png', w: 32, h:32}
@@ -242,10 +242,19 @@ m.Player.prototype.update = function(dt) {
 		this.animDirection = newAnimDirection;
 	}
 	
+	// Arms movement
+	var armsFrame = 0;
+	if (!isWalking) {
+		var tt = this.t % 1000;
+		armsFrame = (tt < 500) ? (tt/200) : (5 - tt/200);
+	}
+	this.sprites.backHand.setPosition(0, armsFrame);
+	this.sprites.frontHand.setPosition(-8 * this.animDirection + 4, armsFrame + 4);
+	
 };
 
 m.Player.prototype.onMouseMove = function(e) {
-	// Update hands rotation
+	// Update hands position
 	/*var dx = e.event.clientX - player.object.getPosition().x;
 	var dy = e.event.clientY - player.object.getPosition().y;
 	var adx = Math.abs(dx);
