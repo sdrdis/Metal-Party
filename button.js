@@ -12,8 +12,9 @@ m.Button = function(coordinate) {
 	this.targetName = properties.targetName;
 	this.actionOn = properties.actionOn;
 	this.actionOff = properties.actionOff;
-	m.Entity.call(this, 'decorations', this.convertCoordToPos(coordinate), {density: 0, restitution: 0});
+	m.Entity.call(this, 'decorations', coordinate, {density: 0, restitution: 0});
 	buttons.push( this );
+	this.buttonId  = buttons.length;
 };
 goog.inherits(m.Button, m.Entity);
 
@@ -28,20 +29,16 @@ m.Button.prototype.createShapeDefs = function() {
 };
 
 m.Button.prototype.activate = function() {
-	this.active = true;
-	if ( targets[ this.targetName ] ) { 
+	if ( ! this.active && targets[ this.targetName ] ) { 
 		targets[ this.targetName ].action( this.actionOn );
-	} else {
-		console.log( 'Le métal c\'est pas bon' );
 	}
+	this.active = true;
 };
 m.Button.prototype.desactivate = function() {
-	this.active = false;
-	if ( targets[ this.targetName ] ) { 
+	if ( this.active && targets[ this.targetName ] ) { 
 		targets[ this.targetName ].action( this.actionOff );
-	} else {
-		console.log( 'Le métal c\'est pas bon' );
 	}
+	this.active = false;
 };
 m.Button.prototype.trigger = function() {
 	if (this.active) {

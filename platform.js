@@ -26,6 +26,7 @@ goog.inherits(m.Platform, m.Entity);
 
 m.Platform.prototype.createObject = function() {
 	return new lime.RoundedRect()
+	    //.setSize(50, 8)
 	    .setSize(50, 8)
 		.setFill(0,0,255);
 	
@@ -33,8 +34,7 @@ m.Platform.prototype.createObject = function() {
 };
 
 m.Platform.prototype.createShapeDefs = function() {
-	var shapeDef = new box2d.BoxDef;
+	var shapeDef = new box2d.BoxDef();
 	shapeDef.extents = new box2d.Vec2(25, 8);
-	
 	return [ shapeDef ];
 };
