@@ -3,7 +3,7 @@ TELLURA Factory
 
 TELLURA Factory est un jeu développé en Javascript en un week-end, lors de la fameuse [Game Dev Party](http://gamedevparty.fr).
 
-Une [démonstration](http://tellura.app5.fr) non-stable est disponible.
+Une [démonstration](http://sdrdis.github.com/Metal-Party) non-stable est disponible.
 
 Son code est distribué sous la [UNLICENSE](http://unlicense.org).
 
