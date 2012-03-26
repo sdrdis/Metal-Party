@@ -18,9 +18,9 @@ goog.inherits(m.DeathZone, m.Entity);
 
 m.DeathZone.prototype.createObject = function() {
 	if (this.image) {
-        return new lime.Sprite()
-        .setSize(tilesSize,tilesSize)
-        .setFill(this.image);
+		return new lime.Sprite()
+			.setSize(tilesSize,tilesSize)
+			.setFill(this.image);
 	} else {
 		return m.Wall.superClass_.createObject.call();
 	}

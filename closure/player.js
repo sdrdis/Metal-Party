@@ -24,31 +24,6 @@ m.Player = function(coordinate) {
 	goog.events.listen(this.object.getParent(), ['mousemove'], this.onMouseMove, false, this);
 	this.lastUpdate = 0;
 
-	lime.scheduleManager.schedule(function(dt) {
-		// Handling
-		
-		var contactZone = this.body.GetContactList();
-		if (contactZone) {
-			if (contactZone.other.isDeathZone) {
-				this.moveTo(startPosition);
-			}
-		}
-		var sceneSize = scene.getSize();
-		this.lastUpdate += dt;
-		/*
-		if (this.lastUpdate > 20) {
-			this.lastUpdate = 0;
-		*/
-		//console.log(this.body.GetCenterPosition().x - sceneSize.width / 2, worldSize.width * tilesSize + sceneSize.width / 2);
-
-		//console.log(worldSize.width * tilesSize - sceneSize.width / 2);
-			var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(this.body.GetCenterPosition().x - sceneSize.width / 2, 0));
-			var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(this.body.GetCenterPosition().y - sceneSize.height / 2, 0));
-			for ( var key in layers ) {
-				layers[ key ].setPosition(-x, -y);
-			}
-		//}
-	},this);
 };
 goog.inherits(m.Player, m.Entity);
 
@@ -134,12 +109,10 @@ m.Player.prototype.onKeyDown = function(e) {
 
 		case codes.LEFT:
 			this.leftPressed = true;
-			//this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.RIGHT:
 			this.rightPressed = true;
-			//this.body.ApplyImpulse(new box2d.Vec2(0, -200), this.body.GetOriginPosition());
 			break;
 			
 		case codes.UP:
@@ -278,6 +251,14 @@ m.Player.prototype.update = function(dt) {
 	
 	if (this.jumpingTime && this.t > this.jumpingTime) {
 		delete this.jumpingTime;
+	}
+
+	// Death
+	var contactZone = this.body.GetContactList();
+	if (contactZone) {
+		if (contactZone.other.isDeathZone) {
+			this.moveTo(startPosition);
+		}
 	}
 };
 

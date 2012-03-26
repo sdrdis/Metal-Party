@@ -64,85 +64,82 @@ m.start = function() {
 				layer.setPosition( tmx.layers[i].px, tmx.layers[i].py);
 				
 				tmx.layers[i].tiles.forEach(function(tileInfos) {
-                    add_tile(tileInfos);
+					add_tile(tileInfos);
 				});
 			}
 		}
-        for (var i=0; i<tmx.objects.length; i++) {
-            var obj = tmx.objects[i];
-            var tile;
-            if (obj.tile) {
-                tile = obj.tile;
-            } else {
-                tile = {
-                    properties : obj.properties
-                }
-            }
-            add_tile({
-                x : obj.x,
-                y : obj.y,
-                px : obj.px,
-                py : obj.py,
-                tile : tile
-            });
-        }
+		for (var i=0; i<tmx.objects.length; i++) {
+			var obj = tmx.objects[i];
+			var tile;
+			if (obj.tile) {
+				tile = obj.tile;
+			} else {
+				tile = { properties : obj.properties }
+			}
+			add_tile({
+				x : obj.x,
+				y : obj.y,
+				px : obj.px,
+				py : obj.py,
+				tile : tile
+			});
+		}
 		for ( var key in layers ) {
 			scene.appendChild(layers[ key ]);
 		}
 	}
 
-    function add_tile(tileInfos) {
+	function add_tile(tileInfos) {
 
-        if (tileInfos.tile.properties instanceof Array) {
-            tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
-        }
+		if (tileInfos.tile.properties instanceof Array) {
+			tileInfos.tile.properties = tmx_tile_parse_property(tileInfos.tile);
+		}
 
-        var type;
-        switch (tileInfos.tile.properties.type) {
+		var type;
+		switch (tileInfos.tile.properties.type) {
 
-            case 'triggerWorld' :
-                type = 'BoxButton';
-                break;
+			case 'triggerWorld' :
+				type = 'BoxButton';
+				break;
 
-            case 'triggerPlayer':
-                type = 'PlayerButton';
-                break;
+			case 'triggerPlayer':
+				type = 'PlayerButton';
+				break;
 
-            case 'door':
-                type = 'DoorTarget';
-                break;
+			case 'door':
+				type = 'DoorTarget';
+				break;
 
-            case 'trap':
-                type = 'TrapTarget';
-                break;
+			case 'trap':
+				type = 'TrapTarget';
+				break;
 
-            case 'mortal':
-                type = 'DeathZone';
-                break;
+			case 'mortal':
+				type = 'DeathZone';
+				break;
 
-            case 'box':
-                type = 'Box';
-                break;
-                
-            case 'anchor':
-                type = 'Anchor';
-                break;
+			case 'box':
+				type = 'Box';
+				break;
+				
+			case 'anchor':
+				type = 'Anchor';
+				break;
 
-            case 'vertical':
-            case 'horizontal':
-                type = 'Platform';
-                break;
+			case 'vertical':
+			case 'horizontal':
+				type = 'Platform';
+				break;
 
-            default:
-                type = 'Wall';
-        }
-        if (tileInfos.tile.properties.type != 'ignore') {
-            new m[type](tileInfos);
-        }
-    }
+			default:
+				type = 'Wall';
+		}
+		if (tileInfos.tile.properties.type != 'ignore') {
+			new m[type](tileInfos);
+		}
+	}
 	
 	function tmx_tile_parse_property(tile) {
-		
 		var values = {};
 		if (tile.properties.length > 0) {
 			tile.properties.forEach(function(prop) {
@@ -194,6 +191,15 @@ m.start = function() {
 		world.Step(dt / 1000, 3);
 		for (var i = 0; i < references.length; i++) {
 			references[i].update(dt);
+		}
+
+		// Scrolling
+		var sceneSize = scene.getSize();
+		this.lastUpdate += dt;
+		var x = Math.min(worldSize.width * tilesSize - sceneSize.width, Math.max(player.body.GetCenterPosition().x - sceneSize.width / 2, 0));
+		var y = Math.min(worldSize.height * tilesSize - sceneSize.height, Math.max(player.body.GetCenterPosition().y - sceneSize.height / 2, 0));
+		for ( var key in layers ) {
+			layers[ key ].setPosition(-x, -y);
 		}
 	},this);
 	director.makeMobileWebAppCapable();
