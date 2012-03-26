@@ -286,7 +286,7 @@
    <tile gid="15"/>
    <tile gid="16"/>
    <tile gid="17"/>
-   <tile gid="0"/>
+   <tile gid="121"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="140"/>
@@ -539,7 +539,7 @@
    <tile gid="0"/>
    <tile gid="139"/>
    <tile gid="0"/>
-   <tile gid="8"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -668,8 +668,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="8"/>
-   <tile gid="137"/>
-   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -678,6 +676,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="51"/>
    <tile gid="0"/>
    <tile gid="140"/>
    <tile gid="0"/>
@@ -797,7 +797,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="139"/>
+   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -806,9 +806,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="51"/>
+   <tile gid="51"/>
+   <tile gid="55"/>
    <tile gid="140"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -933,9 +933,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="52"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="51"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1062,9 +1062,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="51"/>
+   <tile gid="51"/>
+   <tile gid="51"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1322,6 +1322,19 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="52"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1335,22 +1348,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="52"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="120"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="120"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5423,10 +5423,10 @@
   </object>
   <object name="Switch03" x="2176" y="320" width="32" height="32">
    <properties>
-    <property name="actionOff" value="switch,switch"/>
-    <property name="actionOn" value="switch,switch"/>
+    <property name="actionOff" value="switch"/>
+    <property name="actionOn" value="switch"/>
     <property name="name" value="switch03"/>
-    <property name="targetName" value="trap01,trap02"/>
+    <property name="targetName" value="door25"/>
     <property name="type" value="triggerPlayer"/>
    </properties>
   </object>
@@ -5439,7 +5439,7 @@
     <property name="type" value="triggerWorld"/>
    </properties>
   </object>
-  <object name="Switch05" x="2720" y="96" width="32" height="32">
+  <object name="Switch05" x="3038" y="128" width="32" height="32">
    <properties>
     <property name="actionOff" value="switch"/>
     <property name="actionOn" value="switch"/>
@@ -5469,17 +5469,9 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object name="Trap01" x="2496" y="128" width="32" height="64">
+  <object name="Trap02" x="2494" y="128" width="32" height="64">
    <properties>
     <property name="initial" value="closed"/>
-    <property name="name" value="door26"/>
-    <property name="orientation" value="horizontal"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object name="Trap02" x="2400" y="128" width="32" height="64">
-   <properties>
-    <property name="initial" value="opened"/>
     <property name="name" value="door25"/>
     <property name="orientation" value="horizontal"/>
     <property name="type" value="door"/>
