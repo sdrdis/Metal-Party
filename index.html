@@ -3,60 +3,37 @@
 <head>
 	<title>TELLURA Factory</title>
 	<link rel="stylesheet" type="text/css" href="./website/normalize.css" />
-	<style type="text/css">
-		html, body{
-			height: 100%;
-		}
-		body {
-			padding: 10px 10px 50px;
-			background: url('./website/Header.jpg') no-repeat #232323;
-			background-size: 500px; 
-		}
-		.container {
-			width: 852px;
-			margin: 0 0 0 auto;
-		}
-		.gameContainer {
-			padding: 79px 106px;
-			background: url('./website/cadre.jpg') no-repeat;
-		}
-		#tellura {
-			border: 0px transparent solid;
-			margin: 0 auto;
-			background: url('./website/Fond.jpg');
-		}
-		.github {
-			position: absolute;
-			left: 0;
-			top: 0;
-			z-index: 1;
-			text-decoration: none;
-		}
-		.gdp {
-			position: absolute;
-			left: 5px;
-			bottom: 0;
-			z-index: 1;
-			text-decoration: none;
-		}
-		.github img, .gdp img {
-			border: 0;
-			opacity: 0.2;
-		}
-		.github:hover img, .gdp:hover img {
-			opacity: 1;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="./website/tellura.css" />
 	<link href="./website/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<script type="text/javascript">
+		var toggleMute = function () {
+			var audio = document.getElementById('audio');
+			var mute = document.getElementById('soundVolume');
+			if ( audio.muted ) {
+				audio.muted = false;
+				mute.className = '';
+			} else {
+				audio.muted = true;
+				mute.className = 'mute';
+			}
+		}
+	</script>
 </head>
 <body>
-	<a class="github" href="https://github.com/sdrdis/Metal-Party" target="_blank"><img src="https://a248.e.akamai.net/assets.github.com/img/bec6c51521dcc8148146135149fe06a9cc737577/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub">&nbsp;</a>
-	<a class="gdp" href="http://gamedevparty.fr/" target="_blank"><img src="./website/gdp.png" width="100" height="100" alt="logo">&nbsp;</a>
-	<audio autoplay loop preload>
-	 <source src="./website/music.ogg" type="audio/ogg" />
+	<a class="github" href="https://github.com/sdrdis/Metal-Party" target="_blank">
+		<img src="./website/ribbon_github.png" alt="Fork me on GitHub">
+	</a>
+	<a class="gdp" href="http://gamedevparty.fr/" target="_blank">
+		<img src="./website/logo_gamedevparty.png" width="100" height="100" alt="made during a game dev party">
+	</a>
+	<audio id="audio" autoplay loop preload>
+		<source src="./website/music.ogg" type="audio/ogg" />
 	</audio>
 	<div class="container">
 		<div class="gameContainer">
+			<div class="controls">
+				<a id="soundVolume" href="javascript:;" onclick="toggleMute();">&nbsp;</a>
+			</div>
 			<iframe src="./tellura.html" width="640" height="480" id="tellura" />
 		</div>
 	</div>
