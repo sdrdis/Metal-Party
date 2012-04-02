@@ -53,8 +53,8 @@ body {
 }
 .gdp {
 	position: absolute;
-	left: 5px;
-	bottom: 0;
+	right: 0;
+	top: 0;
 	z-index: 1;
 	text-decoration: none;
 }
@@ -67,6 +67,10 @@ body {
 }
 
 @media only screen and (min-width: 1295px) {
+	.gdp {
+		right: auto;
+		left: 405px;
+	}
 	.header{
 		display: none;
 	}
