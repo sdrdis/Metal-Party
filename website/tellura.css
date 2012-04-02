@@ -9,6 +9,9 @@ body {
 	font-size: 14px;
 	text-transform: uppercase;
 }
+.container {
+	padding-bottom: 50px;
+}
 a {
 	color: #873332;
 	text-decoration: none;
@@ -19,15 +22,22 @@ a:focus {
 	color: #873332;
 	border-bottom: 2px solid #873332;
 }
-.header {
-	background: url('./tellura.png') no-repeat center top;
-	height: 240px;
+a.btn:hover,
+a.btn:active,
+a.btn:focus {
+	border-bottom: none;
 }
 .text{
-	margin: 0 auto;
-	width: 825px;
+	background: url('./tellura.png') no-repeat left top;
+	margin: 0 auto -60px;
+	width: 775px;
 	position: relative;
-	text-align: center;
+	z-index: 10;
+	padding-right: 50px;
+	text-align: right;
+}
+.text img {
+	margin-top: -50px;
 }
 .gameContainer {
 	margin: 0 auto;
@@ -51,6 +61,8 @@ a:focus {
 	line-height: 40px;
 	vertical-align: center;
 	text-align: right;
+	z-index: 20;
+	position: relative;
 }
 .links {
 	margin: 0 auto;
@@ -100,22 +112,24 @@ a:focus {
 	}
 	.text{
 		margin: 0;
-		background: url('./tellura.png') no-repeat center top;
-		padding-top: 220px;
-		margin-right: 825px;
-		width: auto;
-		padding-bottom: 50px;
+		background-position: center top;
+		padding: 220px 0 0;
+		width: 360px;
+		float: left;
+		margin: -50px 0 0;
+	}
+	.text img {
+		margin-top: 0;
 	}
 	.gameContainer {
 		margin-top: 50px;
-		float: right;
 	}
+	.gameContainer,
 	.links {
-		float: right;
+		margin-left: 370px;
 	}
 	.container {
 		width: 1200px;
 		margin: 0 auto;
-		position: relative;
 	}
 }
