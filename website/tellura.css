@@ -10,6 +10,7 @@ body {
 	height: 240px;
 }
 .text{
+	width: 825px;
 	position: relative;
 	text-align: center;
 }
@@ -54,7 +55,7 @@ body {
 }
 .gdp {
 	position: absolute;
-	right: 0;
+	right: 20px;
 	top: 0;
 	z-index: 1;
 	text-decoration: none;
@@ -67,14 +68,15 @@ body {
 	opacity: 1;
 }
 
-@media only screen and (min-width: 1175px) {
+@media only screen and (min-width: 1185px) {
 	.header{
 		display: none;
 	}
 	.text{
 		background: url('./tellura.png') no-repeat center top;
 		padding-top: 220px;
-		margin-right: 815px;
+		margin-right: 825px;
+		width: auto;
 	}
 	.gameContainer {
 		float: right;
