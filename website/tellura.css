@@ -2,31 +2,36 @@ html, body{
 	height: 100%;
 }
 body {
-	padding: 10px 10px 50px;
-	background: url('./Header.jpg') no-repeat #232323;
-	background-size: 500px; 
+	padding: 0 10px 50px;
+	background: #272727;
 }
-.container {
-	width: 852px;
-	margin: 0 0 0 auto;
+.header {
+	background: url('./tellura.png') no-repeat center top;
+	background-size: 700px;
+	height: 360px;
+}
+.text{
+	text-align: center;
 }
 .gameContainer {
+	margin: 0 auto;
+	width: 825px;
 	position: relative;
-	height: 638px;
-	background: url('./cadre.jpg') no-repeat;
+	height: 615px;
+	background: url('./frame.png') no-repeat;
 }
 #tellura {
 	border: 0px transparent solid;
 	position: absolute;
-	left: 106px;
-	top: 79px;
+	left: 93px;
+	top: 68px;
 	margin: 0 auto;
-	background: url('./Fond.jpg');
+	background: url('./background.png');
 }
 .controls {
-	padding: 32px 25px 15px;
-	height: 54px;
-	line-height: 54px;
+	padding: 20px 25px 8px;
+	height: 40px;
+	line-height: 40px;
 	vertical-align: center;
 	text-align: right;
 }
@@ -60,4 +65,19 @@ body {
 }
 .github:hover img, .gdp:hover img {
 	opacity: 1;
+}
+
+@media only screen and (min-width: 1295px) {
+	.header{
+		display: none;
+	}
+	.text{
+		background: url('./tellura.png') no-repeat center top;
+		background-size: 480px;
+		padding-top: 250px;
+		margin-right: 815px;
+	}
+	.gameContainer {
+		float: right;
+	}	
 }
