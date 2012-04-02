@@ -7,8 +7,7 @@ body {
 }
 .header {
 	background: url('./tellura.png') no-repeat center top;
-	background-size: 700px;
-	height: 360px;
+	height: 240px;
 }
 .text{
 	text-align: center;
@@ -73,7 +72,6 @@ body {
 	}
 	.text{
 		background: url('./tellura.png') no-repeat center top;
-		background-size: 480px;
 		padding-top: 220px;
 		margin-right: 815px;
 	}
