@@ -10,6 +10,7 @@ body {
 	height: 240px;
 }
 .text{
+	position: relative;
 	text-align: center;
 }
 .gameContainer {
@@ -66,11 +67,7 @@ body {
 	opacity: 1;
 }
 
-@media only screen and (min-width: 1295px) {
-	.gdp {
-		right: auto;
-		left: 405px;
-	}
+@media only screen and (min-width: 1175px) {
 	.header{
 		display: none;
 	}
