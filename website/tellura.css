@@ -10,6 +10,7 @@ body {
 	height: 240px;
 }
 .text{
+	margin: 0 auto;
 	width: 825px;
 	position: relative;
 	text-align: center;
@@ -73,6 +74,7 @@ body {
 		display: none;
 	}
 	.text{
+		margin: 0;
 		background: url('./tellura.png') no-repeat center top;
 		padding-top: 220px;
 		margin-right: 825px;
