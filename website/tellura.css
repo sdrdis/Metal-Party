@@ -4,6 +4,20 @@ html, body{
 body {
 	padding: 0 10px 50px;
 	background: #232323;
+	color: #636869;
+	font-family: serif;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+a {
+	color: #873332;
+	text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus {
+	color: #873332;
+	text-decoration: underline;
 }
 .header {
 	background: url('./tellura.png') no-repeat center top;
@@ -20,6 +34,7 @@ body {
 	width: 825px;
 	position: relative;
 	height: 615px;
+	margin-bottom: 14px;
 	background: url('./frame.png') no-repeat;
 }
 #tellura {
@@ -35,6 +50,11 @@ body {
 	height: 40px;
 	line-height: 40px;
 	vertical-align: center;
+	text-align: right;
+}
+.links {
+	margin: 0 auto;
+	width: 825px;
 	text-align: right;
 }
 #soundVolume {
@@ -88,6 +108,9 @@ body {
 	}
 	.gameContainer {
 		margin-top: 50px;
+		float: right;
+	}
+	.links {
 		float: right;
 	}
 	.container {
