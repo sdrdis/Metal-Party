@@ -54,26 +54,23 @@ a.btn:focus {
 	margin: 0 auto;
 	background: url('./background.png');
 }
-.controls {
-	padding: 20px 25px 8px;
-	height: 40px;
-	line-height: 40px;
-	vertical-align: center;
-	text-align: right;
-	z-index: 20;
-	position: relative;
-}
 .links {
 	margin: 0 auto;
 	width: 825px;
 	text-align: right;
 }
+.controls {
+	height: 33px;
+	line-height: 33px;
+	position: absolute;
+	top: 565px;
+	left: 620px;
+}
 #soundVolume {
-	width: 32px;
-	height: 32px;
+	width: 33px;
+	height: 33px;
 	display: inline-block;
 	background: url('./sound.png');
-	text-decoration: none;
 }
 #soundVolume.mute {
 	background: url('./mute.png');
