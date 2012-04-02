@@ -28,7 +28,7 @@ a.btn:focus {
 }
 .text{
 	background: url('./tellura.png') no-repeat left top;
-	margin: 0 auto -60px;
+	margin: 0 auto -70px;
 	width: 775px;
 	position: relative;
 	z-index: 10;
@@ -36,7 +36,7 @@ a.btn:focus {
 	text-align: right;
 }
 .text img {
-	margin-top: -50px;
+	margin-top: -40px;
 }
 .gameContainer {
 	margin: 0 auto;
