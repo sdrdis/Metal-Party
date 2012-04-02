@@ -79,6 +79,7 @@ body {
 		width: auto;
 	}
 	.gameContainer {
+		margin-top: 50px;
 		float: right;
 	}	
 }
